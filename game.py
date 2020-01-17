@@ -4,6 +4,7 @@ from math import cos, sin, atan2, sqrt, pi, radians, degrees
 from time import time, sleep
 
 # from os import name
+
 # if name == "nt":
 #     import winsound
 
@@ -14,21 +15,20 @@ from time import time, sleep
 tk = Tk()
 width = tk.winfo_screenwidth()
 height = tk.winfo_screenheight()
-print (width/height)
 tk.attributes("-fullscreen", True)
 screen = Canvas(tk, width=width, height=height, bg="black")
 screen.pack()
 
-# image = PhotoImage(file="image.gif")
-# screen.create_image(width/2,height/2,image=image)
 
 def setInitialValues():
 
     global radius, playerSpeed, asteroid, radius, speed, minRadius, maxRadius
-    global spawnChance, points, timeLimit, bonusScore, bonus, end, maxSpeed
+    global spawnChance, points, end, maxSpeed
     global playerAngle, angles, playerStart, xCentre, yCentre, line, arc
     global angleOutput, n, r, X, Y, dtheta, xc, yc, theta, arrayX, arrayY
     global pos1, pos2, pos3, player, playerSpeedX, playerspeedY, maxPlayerSpeed
+    global bullets, bulletAngle, bulletSpeedsX, bulletSpeedsY, lastBullet
+    global startTime
 
 
     # else:
@@ -40,11 +40,8 @@ def setInitialValues():
     minRadius = 15
     maxRadius = 30
     maxSpeed = 10
-    spawnChance = 40
+    spawnChance = 20
     points = 0  
-    timeLimit = 30
-    bonusScore = 500
-    bonus = 0
     enemyChance = 50
     lives = 3
 
@@ -72,14 +69,16 @@ def setInitialValues():
         Y = r*sin(theta) + yc
         arrayX.append(X)
         arrayY.append(Y)
-        # screen.create_oval(X+0.5,Y+0.5,X-0.5,Y-0.5,fill="red",outline="red")
 
 
     pos1 = 90
     pos2 = 305
     pos3 = 233
 
-
+    bullets = []
+    bulletAngle = []
+    bulletSpeedsX = []
+    bulletSpeedsY = []
 
 
 
@@ -93,28 +92,30 @@ def setInitialValues():
     playerSpeedX = 0
     playerspeedY = -1
 
-    lastBoostTime = time()
+    lastBullet = time()
     
-
-
-    end = time() + timeLimit
+    startTime = time()
     
 
 
 def drawObjects():
 
-    global player, playerCircle, timeCounter, score, playerAngle
+    global player, playerCircle, timeCounter, score, playerAngle, timer
 
 
-    screen.create_text(50,30, text="TIME", fill="white")
-    screen.create_text(150,30, text="SCORE", fill="white")
-    timeCounter = screen.create_text(50,50, fill="white")
-    score = screen.create_text(150,50, fill="white")
+    screen.create_text(50,30, text="SCORE", fill="white",font=("helvetica", 16))
+    screen.create_text(200,30, text="TIME SURVIVED", fill="white",font=("helvetica", 16))
+    score = screen.create_text(50,60, fill="white",font=("helvetica", 16))
+    timer = screen.create_text(200,60, fill="white",font=("helvetica", 16))
 
 def updateScore(scoreText):
     screen.itemconfig(score, text=str(scoreText))
-def updateTime(timeText):
-    screen.itemconfig(timeCounter, text=str(timeText))
+
+def updateTime():
+    global currentTime
+    currentTime = time() - startTime
+    screen.itemconfig(timer, text=str(round(currentTime,1)))
+
 
 
 def keyPress(event):
@@ -130,7 +131,7 @@ def keyPress(event):
             pos2 += 359
         if pos3 <= 0:
             pos3 += 359 
-        print("Facing", pos1, "degrees")
+        # print("Facing", pos1, "degrees")
 
     elif event.keysym in ["d","Right"]:
         pos1 += 5
@@ -142,15 +143,15 @@ def keyPress(event):
             pos2 -= 359
         if pos3 >= 360:
             pos3 -= 359
-        print("Facing", pos1, "degrees")
+        # print("Facing", pos1, "degrees")
 
     elif event.keysym in ["w", "Up"]:
-        if (time() - lastBoostTime) > 1:
-            if (time() - lastBoostTime) < 5:
-                maxPlayerSpeed = 2
-        else:
-            maxPlayerSpeed = 6
-            lastBoostTime = time()
+        # if (time() - lastBoostTime) > 1:
+        #     if (time() - lastBoostTime) < 5:
+        #         maxPlayerSpeed = 2
+        # else:
+        maxPlayerSpeed = 6
+
 
     elif event.keysym == "Escape":
         tk.destroy()
@@ -162,6 +163,7 @@ def keyUp(event):
 
 
 
+    
 
 def drawasteroidR():
     x = 0 - 100
@@ -201,6 +203,24 @@ def movePlayer():
         arrayX[i] += playerSpeedX
         arrayY[i] += playerspeedY
 
+def spawnBullet():
+    global b, bulletAngle, pos1, bulletSpeeds, bulletSpeedsX, bulletSpeedsY, lastBullet
+
+    if (time() - lastBullet) < 0.5:
+        pass
+    else:
+        b = screen.create_oval(coords1[0]+3,coords1[1]+3,coords1[0]-3,coords1[1]-3,fill="red",outline="red")
+        bullets.append(b)
+        bulletAngle.append(pos1)
+        maxBulletSpeed = 7
+        bulletSpeedsX.append (-(maxBulletSpeed * cos(radians(pos1))))
+        bulletSpeedsY.append (-(maxBulletSpeed * sin(radians(pos1))))
+        lastBullet = time()
+
+def moveBullets():
+    for i in range(len(bullets)):
+        screen.move(bullets[i], bulletSpeedsX[i], bulletSpeedsY[i])
+
 
 
 def checkEdges():
@@ -222,19 +242,34 @@ def getCoords(asteroid):
     y = (xy[1] + xy[3])/2
     return(x,y)
 
-def delete(i):
+def deleteAsteroid(i):
     global radius,colours,speed,asteroid
     del radius[i]
     del speed[i]
     screen.delete(asteroid[i])
     del asteroid[i]
 
+def deleteBullet(i):
+    global bullets, bulletAngle, bulletSpeedsX, bulletSpeedsY
+    del bulletAngle[i]
+    del bulletSpeedsX[i]
+    del bulletSpeedsY[i]
+    print(bullets)
+    screen.delete(bullets[i])
+    del bullets[i]
+
 def clean():
     for i in range(len(asteroid)-1, -1, -1):
         x = getCoords(asteroid[i])
         x = x[0]
         if x < -100 or x > width+100:
-            delete(i)
+            deleteAsteroid(i)
+
+    for i in range(len(bullets)-1, -1, -1):
+        x = getCoords(bullets[i])
+        if ((x[0] < -20 or x[0] > width + 20) or (x[1] < -20 or x[1] > height + 20)):
+            deleteBullet(i)
+
 
 def getDistance(a,b):
     x1 = getCoords(a)
@@ -251,41 +286,61 @@ def collision():
     points = 0
     for i in range(len(asteroid)-1, -1, -1):
         if getDistance(player, asteroid[i]) < (15 + radius[i]):
-            points += (radius[i] + speed[i])
-            delete(i)
+            endGame()
+    try:
+        for i in range(len(asteroid)-1, -1, -1):
+            for j in range(len(bullets)-1, -1, -1):
+                if getDistance(bullets[j], asteroid[i]) < (15 + radius[i]):
+                    points += (radius[i] + speed[i])
+                    deleteAsteroid(i)
+    except:
+        pass
     return(points)
 
-def endGame():
-    global gameRunning
-    gameRunning = False
-    screen.create_text(width/2, height/2, text="GAME OVER", fill="white", font=("helvetica", 45))
-    screen.create_text(width/2, (height/2)+30, text="Score:  " + str(points), fill="white")
-    screen.create_text(width/2, (height/2)+45, text="Bonus time:  " + str(bonus*timeLimit), fill="white")
 
+def endGame():
+    global bullets, gameRunning
+    gameRunning = False
+
+    for i in range(len(bullets)-1,-1,-1):
+        screen.delete(bullets[i])
+
+    screen.create_polygon(coords1,coords2,coords3,fill="yellow")
+
+    screen.create_text(width/2, height/2, text="GAME OVER", fill="white", font=("helvetica", 45))
+
+    screen.create_text(width/2, (height/2)+45, text="Score:  " + str(points), fill="white",font=("helvetica", 16))
+    
+    screen.create_text(width/2, (height/2)+90, text="Time Survived:  " + str(round(currentTime,2)) + " seconds", fill="white",font=("helvetica", 16))
 
 
 def runGame():
-    global end, points, bonus,spawnChance,enemyChance,gameRunning, player, pos1
+    global end, points,spawnChance,enemyChance,gameRunning, player, pos1
     setInitialValues()
     drawObjects()
+    scoreCounter = time()
     gameRunning = True
-    while time() < end:
+    while True:
         if randint(1, spawnChance) == 1:
             if randint(1,2) == 1:
                 drawasteroidR()
             else:
                 drawasteroidL()
         if gameRunning == True:
+            
             moveasteroids()
             movePlayer()
+            spawnBullet()
+            moveBullets()
             checkEdges()
         clean()
         points += collision()
-        if int(points/bonusScore) > bonus:
-            bonus += 1
-            end = end + timeLimit
         updateScore(points)
-        updateTime(int(end-time()))
+        if (time() - scoreCounter) > 1:
+            points += 50
+            updateScore(points)
+            scoreCounter = time()
+        updateTime()
         screen.update()
         sleep(0.01)
         screen.delete(player)
