@@ -1,10 +1,10 @@
+
 from tkinter import Tk, Canvas, PhotoImage
 from random import randint
 from math import cos, sin, atan2, sqrt, pi, radians, degrees
 from time import time, sleep
 
 # from os import name
-
 # if name == "nt":
 #     import winsound
 
@@ -40,7 +40,7 @@ def setInitialValues():
     minRadius = 15
     maxRadius = 30
     maxSpeed = 10
-    spawnChance = 20
+    spawnChance = 35 
     points = 0  
     enemyChance = 50
     lives = 3
@@ -131,7 +131,6 @@ def keyPress(event):
             pos2 += 359
         if pos3 <= 0:
             pos3 += 359 
-        # print("Facing", pos1, "degrees")
 
     elif event.keysym in ["d","Right"]:
         pos1 += 5
@@ -143,7 +142,6 @@ def keyPress(event):
             pos2 -= 359
         if pos3 >= 360:
             pos3 -= 359
-        # print("Facing", pos1, "degrees")
 
     elif event.keysym in ["w", "Up"]:
         # if (time() - lastBoostTime) > 1:
@@ -254,7 +252,6 @@ def deleteBullet(i):
     del bulletAngle[i]
     del bulletSpeedsX[i]
     del bulletSpeedsY[i]
-    print(bullets)
     screen.delete(bullets[i])
     del bullets[i]
 
@@ -337,7 +334,7 @@ def runGame():
         points += collision()
         updateScore(points)
         if (time() - scoreCounter) > 1:
-            points += 50
+            points += 10
             updateScore(points)
             scoreCounter = time()
         updateTime()
