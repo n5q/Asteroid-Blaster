@@ -3,7 +3,9 @@ from tkinter import Tk, Canvas, PhotoImage
 from random import randint
 from math import cos, sin, atan2, sqrt, pi, radians, degrees
 from time import time, sleep
-from winsound import PlaySound, SND_LOOP, SND_ASYNC, SND_PURGE
+from os import name
+if name == "nt":
+    from winsound import PlaySound, SND_LOOP, SND_ASYNC, SND_PURGE
 
 
 tk = Tk()
@@ -17,7 +19,8 @@ def menu():
     global loop, gameStarted
     gameStarted = False
     loop = True
-    PlaySound('Loop.wav', SND_LOOP + SND_ASYNC)
+    if name == "nt":
+        PlaySound('Loop.wav', SND_LOOP + SND_ASYNC)
     setInitialValues()
     while loop == True:
         if randint(1, 10) == 1:
@@ -59,7 +62,8 @@ def motion(event):
 
 def click(event):
     if (x in range(round((width/2)-200),round((width/2)+200))) and y in range(height-175,height-35) and gameStarted == False:
-        # PlaySound(None, SND_PURGE)
+        if name == "nt":
+            PlaySound(None, SND_PURGE)
         loop = False
         shipSelector()
 
