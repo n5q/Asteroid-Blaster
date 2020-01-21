@@ -3,21 +3,66 @@ from tkinter import Tk, Canvas, PhotoImage
 from random import randint
 from math import cos, sin, atan2, sqrt, pi, radians, degrees
 from time import time, sleep
-
-# from os import name
-# if name == "nt":
-#     import winsound
-
-
-
+from winsound import PlaySound, SND_LOOP, SND_ASYNC, SND_PURGE
 
 
 tk = Tk()
 width = tk.winfo_screenwidth()
 height = tk.winfo_screenheight()
 tk.attributes("-fullscreen", True)
-screen = Canvas(tk, width=width, height=height, bg="black")	
+screen = Canvas(tk, width=width, height=height, bg="black") 
 screen.pack()
+
+def menu():
+    global loop, gameStarted
+    gameStarted = False
+    loop = True
+    PlaySound('Loop.wav', SND_LOOP + SND_ASYNC)
+    setInitialValues()
+    while loop == True:
+        if randint(1, 10) == 1:
+            if randint(1,2) == 1:
+                drawasteroidR()
+            else:
+                drawasteroidL()
+            
+        moveasteroids()
+
+        a = screen.create_text((width/2)+3,103,text= "A S T E R O I D  B L A S T E R",font="fixedsys 75 bold",fill="grey33")
+        b = screen.create_text(width/2,100,text= "A S T E R O I D  B L A S T E R",font="fixedsys 75 bold",fill="white")
+        c = screen.create_text((width/2)+3, height-147, text="START GAME",font="fixedsys 45",fill="green2")
+        d = screen.create_text(width/2, height-150, text="START GAME",font="fixedsys 45",fill="white",activefill="grey50")
+        e = screen.create_rectangle((width/2)-222,height-222,(width/2)+228,height-82,outline="green2",width=3)
+        f = screen.create_rectangle((width/2)-225,height-225,(width/2)+225,height-85,outline="white",width=3)
+        g = screen.create_rectangle((width/2)-222,height-497,(width/2)+228,height-357,outline="yellow4",width=3)
+        h = screen.create_rectangle((width/2)-225,height-500,(width/2)+225,height-360,outline="white",width=3)
+        
+        screen.update()
+        sleep(0.01)
+        clean()
+        screen.delete(a,b,c,d,e,f)
+
+def shipSelector():
+    global arrowR, arrowL
+    screen.delete("all")
+    screen.create_rectangle(0,0,150,height,fill="white")
+    screen.create_rectangle(width-150,0,width,height,fill="white",activefill="grey33")
+
+    arrowR = PhotoImage(file="arrowR.gif")
+    arrowL = PhotoImage(file="arrowL.gif")
+    screen.create_image(width-75,(height/2),image=arrowR)
+    screen.create_image(75,height/2,image=arrowL)
+def motion(event):
+    global x,y,loop
+    x, y = event.x, event.y
+    x in range(round((width/2)-200),round((width/2)+200))
+
+def click(event):
+    if (x in range(round((width/2)-200),round((width/2)+200))) and y in range(height-175,height-35) and gameStarted == False:
+        # PlaySound(None, SND_PURGE)
+        loop = False
+        shipSelector()
+
 
 
 def setInitialValues():
@@ -85,7 +130,7 @@ def setInitialValues():
     coords1 = (arrayX[pos1], arrayY[pos1])
     coords2 = (arrayX[pos2], arrayY[pos2])
     coords3 = (arrayX[pos3], arrayY[pos3])
-    player = screen.create_polygon(coords1,coords2,coords3,fill="yellow")
+
 
 
     maxPlayerSpeed = 2
@@ -102,7 +147,7 @@ def drawObjects():
 
     global player, playerCircle, timeCounter, score, playerAngle, timer
 
-
+    player = screen.create_polygon(coords1,coords2,coords3,fill="yellow")
     screen.create_text(50,30, text="SCORE", fill="white",font=("helvetica", 16))
     screen.create_text(200,30, text="TIME SURVIVED", fill="white",font=("helvetica", 16))
     score = screen.create_text(50,60, fill="white",font=("helvetica", 16))
@@ -341,9 +386,11 @@ def runGame():
         screen.delete(player)
     endGame()
 
-tk.after(0,runGame)
+tk.after(0,menu)
 screen.bind("<Key>", keyPress)
 screen.bind("<KeyRelease>", keyUp)
+screen.bind("<Motion>", motion)
+screen.bind("<Button 1>", click)
 screen.pack()
 screen.focus_set()
 screen.mainloop()
