@@ -33,10 +33,10 @@ def menu():
     screen.delete("all")
     if firstRun == True:
         if Windows:
-            PlaySound('Loop.wav', SND_LOOP + SND_ASYNC)
+            PlaySound('Loop.mp3', SND_LOOP + SND_ASYNC)
     setInitialValues()
     while loop == True:
-        if randint(1, 15) == 1:
+        if randint(1, 8) == 1:
             if randint(1,2) == 1:
                 drawasteroidR()
             else:
@@ -71,7 +71,7 @@ def instructions():
 
     setInitialValues()
     while loop == True:
-        if randint(1, 15) == 1:
+        if randint(1, 8) == 1:
             if randint(1,2) == 1:
                 drawasteroidR()
             else:
@@ -96,7 +96,7 @@ def instructions():
 
 
 def shipSelector():
-    global arrowR, arrowL, loop, instruction, selector, ship
+    global arrowR, arrowL, loop, instruction, selector, ship, color
     ship = 0
     loop = False
     screen.delete("all")
@@ -107,7 +107,7 @@ def shipSelector():
 
     setInitialValues()
     while loop == True:
-        if randint(1, 15) == 1:
+        if randint(1, 8) == 1:
             if randint(1,2) == 1:
                 drawasteroidR()
             else:
@@ -162,47 +162,37 @@ def click(event):
             else: ship -= 1
 
 
-def setInitialValues():
+def setInitialValues(*args):
 
-    global radius, playerSpeed, asteroid, radius, speed, minRadius, maxRadius
+    global radius, asteroid, radius, speed, minRadius, maxRadius
     global spawnChance, points, end, maxSpeed
     global playerAngle, angles, playerStart, xCentre, yCentre, line, arc
     global angleOutput, n, r, X, Y, dtheta, xc, yc, theta, arrayX, arrayY
     global pos1, pos2, pos3, player, playerSpeedX, playerspeedY, maxPlayerSpeed
     global bullets, bulletAngle, bulletSpeedsX, bulletSpeedsY, lastBullet
-    global startTime,coords1,coords2,coords3
+    global startTime,coords1,coords2,coords3, maxBulletSpeed, boostSpeed, rotation
 
-    # else:
+
     radius = 15
-    playerSpeed = 10
     asteroid = []
     radius = []
     speed = []
     minRadius = 15
     maxRadius = 30
-    maxSpeed = 10
-    spawnChance = 35 
+    maxSpeed = 20
+    spawnChance = 20
     points = 0  
-    enemyChance = 50
-    lives = 3
-
     n=360
     r= -20
     X = 380
     Y = 380
-
     dtheta = 2*pi/n
-
     xc = X - r 
     yc = Y - r
     theta = 0
-
     arrayX = [X]
     arrayY = [Y]
     for i in range(n):
-
-
-
         #CIRCULAR MOTION 
         theta += dtheta
 
@@ -210,40 +200,51 @@ def setInitialValues():
         Y = r*sin(theta) + yc
         arrayX.append(X)
         arrayY.append(Y)
-
-
     pos1 = 90
     pos2 = 305
     pos3 = 233
-
     bullets = []
     bulletAngle = []
     bulletSpeedsX = []
     bulletSpeedsY = []
-
-
-
     coords1 = (arrayX[pos1], arrayY[pos1])
     coords2 = (arrayX[pos2], arrayY[pos2])
     coords3 = (arrayX[pos3], arrayY[pos3])
-
-
-
-    maxPlayerSpeed = 2
     playerSpeedX = 0
     playerspeedY = -1
-
     lastBullet = time()
-    
     startTime = time()
     
+    if args:
+        maxSpeed = 10
+        if args[0] == "yellow":
+            maxBulletSpeed = 7
+            rotation = 5
+            boostSpeed = 6
+            maxPlayerSpeed = 2
 
+        elif args[0] == "blue":
+            maxBulletSpeed = 10
+            rotation = 3
+            boostSpeed = 8
+            maxPlayerSpeed = 4
+
+        elif args[0] == "red":
+            maxBulletSpeed = 5
+            rotation = 12
+            boostSpeed = 15
+            maxPlayerSpeed = 1
+
+        elif args[0] == "green":
+            maxBulletSpeed = 10
+            rotation = 3
+            boostSpeed = 8
+            maxPlayerSpeed = 3
 
 def drawObjects():
 
-    global player, playerCircle, timeshiper, score, playerAngle, timer
-
-    player = screen.create_polygon(coords1,coords2,coords3,fill="yellow")
+    global player, playerCircle, score, playerAngle, timer
+    player = screen.create_polygon(coords1,coords2,coords3,fill=color)
     screen.create_text(50,30, text="SCORE", fill="white",font=("helvetica", 16))
     screen.create_text(200,30, text="TIME SURVIVED", fill="white",font=("helvetica", 16))
     score = screen.create_text(50,60, fill="white",font=("helvetica", 16))
@@ -260,12 +261,12 @@ def updateTime():
 
 
 def keyPress(event):
-    global pos1, pos2, pos3, maxPlayerSpeed
+    global pos1, pos2, pos3, maxPlayerSpeed,rotation
 
     if event.keysym in ["a","Left"]:
-        pos1 -= 5
-        pos2 -= 5
-        pos3 -= 5
+        pos1 -= rotation
+        pos2 -= rotation
+        pos3 -= rotation
         if pos1 <= 0:
             pos1 += 359
         if pos2 <= 0:
@@ -274,9 +275,9 @@ def keyPress(event):
             pos3 += 359 
 
     elif event.keysym in ["d","Right"]:
-        pos1 += 5
-        pos2 += 5
-        pos3 += 5
+        pos1 += rotation
+        pos2 += rotation
+        pos3 += rotation
         if pos1 >= 360:
             pos1 -= 359
         if pos2 >= 360:
@@ -285,7 +286,7 @@ def keyPress(event):
             pos3 -= 359
 
     elif event.keysym in ["w", "Up"]:
-        maxPlayerSpeed = 6
+        maxPlayerSpeed = boostSpeed
 
 
     elif event.keysym == "Escape":
@@ -336,7 +337,7 @@ def movePlayer():
     coords3 = (arrayX[pos3], arrayY[pos3])
     try: screen.delete(player)
     except: pass
-    player = screen.create_polygon(coords1,coords2,coords3,fill="yellow")
+    player = screen.create_polygon(coords1,coords2,coords3,fill=color)
     playerSpeedX = -(maxPlayerSpeed * cos(radians(pos1)))
     playerspeedY = -(maxPlayerSpeed * sin(radians(pos1)))
     for i in range(len(arrayX)):
@@ -352,7 +353,7 @@ def spawnBullet():
         b = screen.create_oval(coords1[0]+3,coords1[1]+3,coords1[0]-3,coords1[1]-3,fill="red",outline="red")
         bullets.append(b)
         bulletAngle.append(pos1)
-        maxBulletSpeed = 7
+
         bulletSpeedsX.append (-(maxBulletSpeed * cos(radians(pos1))))
         bulletSpeedsY.append (-(maxBulletSpeed * sin(radians(pos1))))
         lastBullet = time()
@@ -457,11 +458,13 @@ def endGame():
 
 def runGame():
     
-    global end, points,spawnChance,enemyChance,gameRunning, player, pos1,loop
+    global end, points,spawnChance,gameRunning, player, pos1,loop
+    PlaySound(None, SND_PURGE)
+    PlaySound("Splash.mp3", SND_ASYNC + SND_LOOP)
     loop = False
     screen.delete("all")
     screen.update()
-    setInitialValues()
+    setInitialValues(color)
     drawObjects()
     scoreshiper = time()
     gameRunning = True
