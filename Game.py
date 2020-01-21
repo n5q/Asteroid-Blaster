@@ -3,6 +3,10 @@ from tkinter import Tk, Canvas, PhotoImage
 from random import randint
 from math import cos, sin, atan2, sqrt, pi, radians, degrees
 from time import time, sleep
+
+# WINSOUND IS NOT AVALIABLE ON MACOS/LINUX SO IF YOU ARE PLAYING ON EITHER OF THOSE PLATFORMS
+# YOU WILL JUST HAVE TO PLAY WITHOUT SOUND :/
+
 from os import name
 if name == "nt":
     from winsound import PlaySound, SND_LOOP, SND_ASYNC, SND_PURGE
@@ -11,6 +15,8 @@ if name == "nt":
 tk = Tk()
 width = tk.winfo_screenwidth()
 height = tk.winfo_screenheight()
+# width = 1280
+# height = 1024
 tk.attributes("-fullscreen", True)
 screen = Canvas(tk, width=width, height=height, bg="black") 
 screen.pack()
@@ -23,7 +29,7 @@ def menu():
         PlaySound('Loop.wav', SND_LOOP + SND_ASYNC)
     setInitialValues()
     while loop == True:
-        if randint(1, 10) == 1:
+        if randint(1, 15) == 1:
             if randint(1,2) == 1:
                 drawasteroidR()
             else:
@@ -33,17 +39,46 @@ def menu():
 
         a = screen.create_text((width/2)+3,103,text= "A S T E R O I D  B L A S T E R",font="fixedsys 75 bold",fill="grey33")
         b = screen.create_text(width/2,100,text= "A S T E R O I D  B L A S T E R",font="fixedsys 75 bold",fill="white")
-        c = screen.create_text((width/2)+3, height-147, text="START GAME",font="fixedsys 45",fill="green2")
-        d = screen.create_text(width/2, height-150, text="START GAME",font="fixedsys 45",fill="white",activefill="grey50")
+        c = screen.create_text((width/2)+3, height-153, text="START GAME",font="fixedsys 45",fill="green2")
+        d = screen.create_text(width/2, height-155, text="START GAME",font="fixedsys 45",fill="white",activefill="grey50")
         e = screen.create_rectangle((width/2)-222,height-222,(width/2)+228,height-82,outline="green2",width=3)
         f = screen.create_rectangle((width/2)-225,height-225,(width/2)+225,height-85,outline="white",width=3)
-        g = screen.create_rectangle((width/2)-222,height-497,(width/2)+228,height-357,outline="yellow4",width=3)
-        h = screen.create_rectangle((width/2)-225,height-500,(width/2)+225,height-360,outline="white",width=3)
+        g = screen.create_rectangle((width/2)-247,height-397,(width/2)+253,height-257,outline="gold",width=3)
+        h = screen.create_rectangle((width/2)-250,height-400,(width/2)+250,height-260,outline="white",width=3)
+        i = screen.create_text((width/2)+3,height-327, text="INSTRUCTIONS",font="fixedsys 45",fill="gold",activefill="grey50")
+        j = screen.create_text(width/2,height-330, text="INSTRUCTIONS",font="fixedsys 45",fill="white",activefill="grey50")
         
         screen.update()
         sleep(0.01)
         clean()
-        screen.delete(a,b,c,d,e,f)
+        screen.delete(a,b,c,d,e,f,g,h,i)
+
+def instructions():
+    loop = False
+    screen.delete("all")
+    screen.update()
+    loop = True
+    setInitialValues()
+    while loop == True:
+        if randint(1, 15) == 1:
+            if randint(1,2) == 1:
+                drawasteroidR()
+            else:
+                drawasteroidL()
+            
+        moveasteroids()   
+
+        a = screen.create_text((width/2)+3,103,text= "I N S T R U C T I O N S",font="fixedsys 75 bold",fill="grey33")
+        b = screen.create_text(width/2,100,text= "I N S T R U C T I O N S",font="fixedsys 75 bold",fill="white")
+        c = screen.create_text(width/2, 250, font="fixedsys 22",fill="white", text =
+            "MOVE YOUR PLAYER USING THE LEFT AND RIGHT ARROW KEYS, HOLD THE UP ARROW KEY\n TO GET A SPEED BOOST BUT KEEP IN MIND THAT YOU CANNOT TURN WHILE BOOSTING") 
+
+
+
+        screen.update()
+        sleep(0.01)
+        clean()
+        screen.delete(a,b,c)
 
 def shipSelector():
     global arrowR, arrowL
@@ -58,15 +93,15 @@ def shipSelector():
 def motion(event):
     global x,y,loop
     x, y = event.x, event.y
-    x in range(round((width/2)-200),round((width/2)+200))
 
 def click(event):
-    if (x in range(round((width/2)-200),round((width/2)+200))) and y in range(height-175,height-35) and gameStarted == False:
+    if (x in range(round((width/2)-225),round((width/2)+225))) and y in range(height-225,height-85) and gameStarted == False:
         if name == "nt":
             PlaySound(None, SND_PURGE)
         loop = False
         shipSelector()
-
+    elif (x in range(round((width/2)-250),round((width/2)+250))) and y in range(height-400,height-260) and gameStarted == False:
+        instructions()
 
 
 def setInitialValues():
