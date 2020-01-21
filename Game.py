@@ -15,18 +15,19 @@ if name == "nt":
 tk = Tk()
 width = tk.winfo_screenwidth()
 height = tk.winfo_screenheight()
-# width = 1280
-# height = 1024
 tk.attributes("-fullscreen", True)
 screen = Canvas(tk, width=width, height=height, bg="black") 
 screen.pack()
-
+firstRun = True
 def menu():
-    global loop, gameStarted
+    global loop, gameStarted, instruction
     gameStarted = False
     loop = True
-    if name == "nt":
-        PlaySound('Loop.wav', SND_LOOP + SND_ASYNC)
+    instruction = False
+    screen.delete("all")
+    if firstRun == True:
+        if name == "nt":
+            PlaySound('Loop.wav', SND_LOOP + SND_ASYNC)
     setInitialValues()
     while loop == True:
         if randint(1, 15) == 1:
@@ -54,6 +55,9 @@ def menu():
         screen.delete(a,b,c,d,e,f,g,h,i)
 
 def instructions():
+    global instruction,firstRun
+    firstRun = False
+    instruction = True
     loop = False
     screen.delete("all")
     screen.update()
@@ -70,37 +74,68 @@ def instructions():
 
         a = screen.create_text((width/2)+3,78,text= "I N S T R U C T I O N S",font="fixedsys 75 bold",fill="grey33")
         b = screen.create_text(width/2,75,text= "I N S T R U C T I O N S",font="fixedsys 75 bold",fill="white")
-        c = screen.create_text(width/2, 300, font="fixedsys 22",fill="white", text =
+        c = screen.create_text(width/2, 400, font="fixedsys 22",fill="white", text =
             "MOVE YOUR PLAYER USING THE LEFT AND RIGHT ARROW KEYS, HOLD THE UP ARROW KEY\nTO GET A SPEED BOOST BUT KEEP IN MIND THAT YOU CANNOT TURN WHILE BOOSTING.\nYOU CAN PRESS THE ESCAPE KEY AT ANY TIME TO QUIT THE GAME, OR Q TO RETURN\nTO THE MENU.\n \nYOUR SHIP AUTOMATICALLY FIRES BULLETS, IF A BULLET HITS AN ASTEROID\nYOU WILL GET POINTS, THE SMALLER THE ASTEROID AND THE FASTER IT IS MOVING\nTHE MORE POINTS YOU WILL GET. YOU ALSO GAIN 10 POINTS FOR EACH SECOND\nYOU SURVIVE. IF YOU HIT THE EDGE OF THE SCREEN OR AN ASTEROID YOU WILL\nDIE AND THE GAME WILL BE OVER.") 
+        d = screen.create_rectangle((width/2)-222,height-397,(width/2)+228,height-257,outline="gold",width=3)
+        e = screen.create_rectangle((width/2)-225,height-400,(width/2)+225,height-260,outline="white",width=3)
+        f = screen.create_text((width/2)+3,height-327, text="BACK",font="fixedsys 45",fill="gold",activefill="grey50")
+        g = screen.create_text(width/2,height-330, text="BACK",font="fixedsys 45",fill="white",activefill="grey50")
 
 
         screen.update()
         sleep(0.01)
         clean()
-        screen.delete(a,b,c)
+        screen.delete(a,b,c,d,e,f,g)
 
 def shipSelector():
     global arrowR, arrowL
+    loop = False
     screen.delete("all")
-    screen.create_rectangle(0,0,150,height,fill="white")
-    screen.create_rectangle(width-150,0,width,height,fill="white",activefill="grey33")
+    screen.update()
+    loop = True
+    setInitialValues()
+    while loop == True:
+        if randint(1, 15) == 1:
+            if randint(1,2) == 1:
+                drawasteroidR()
+            else:
+                drawasteroidL()
+            
+        moveasteroids()
 
-    arrowR = PhotoImage(file="arrowR.gif")
-    arrowL = PhotoImage(file="arrowL.gif")
-    screen.create_image(width-75,(height/2),image=arrowR)
-    screen.create_image(75,height/2,image=arrowL)
+        ships = ["yellow","blue","red","green"]
+        screen.create_rectangle(0,0,150,height,fill="white",activefill="grey33")
+        screen.create_rectangle(width-150,0,width,height,fill="white",activefill="grey33")
+        color = "yellow"
+        arrowR = PhotoImage(file="arrowR.gif")
+        arrowL = PhotoImage(file="arrowL.gif")
+        a =screen.create_image(width-75,(height/2),image=arrowR)
+        b =screen.create_image(75,height/2,image=arrowL)
+        c = screen.create_text((width/2)+3, height-153, text="START GAME",font="fixedsys 45",fill="green2")
+        d = screen.create_text(width/2, height-155, text="START GAME",font="fixedsys 45",fill="white",activefill="grey50")
+        e = screen.create_rectangle((width/2)-222,height-222,(width/2)+228,height-82,outline="green2",width=3)
+        f = screen.create_rectangle((width/2)-225,height-225,(width/2)+225,height-85,outline="white",width=3)
+        g = screen.create_polygon(width/2,350,(width/2)-100,650,(width/2)+100,650,fill="color")  
+
+        screen.update()
+        sleep(0.01)
+        clean()
+        screen.delete(a,b,c,d,e,f,g)
+
+
 def motion(event):
     global x,y,loop
     x, y = event.x, event.y
 
 def click(event):
     if (x in range(round((width/2)-225),round((width/2)+225))) and y in range(height-225,height-85) and gameStarted == False:
-        if name == "nt":
-            PlaySound(None, SND_PURGE)
         loop = False
         shipSelector()
     elif (x in range(round((width/2)-250),round((width/2)+250))) and y in range(height-400,height-260) and gameStarted == False:
-        instructions()
+        if instruction == False:
+            instructions()
+        else:
+            menu()
 
 
 def setInitialValues():
@@ -231,6 +266,8 @@ def keyPress(event):
 
 
     elif event.keysym == "Escape":
+        if name == "nt":
+            PlaySound(None, SND_PURGE)
         tk.destroy()
 
 def keyUp(event):
