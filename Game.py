@@ -68,11 +68,10 @@ def instructions():
             
         moveasteroids()   
 
-        a = screen.create_text((width/2)+3,103,text= "I N S T R U C T I O N S",font="fixedsys 75 bold",fill="grey33")
-        b = screen.create_text(width/2,100,text= "I N S T R U C T I O N S",font="fixedsys 75 bold",fill="white")
-        c = screen.create_text(width/2, 250, font="fixedsys 22",fill="white", text =
-            "MOVE YOUR PLAYER USING THE LEFT AND RIGHT ARROW KEYS, HOLD THE UP ARROW KEY\n TO GET A SPEED BOOST BUT KEEP IN MIND THAT YOU CANNOT TURN WHILE BOOSTING") 
-
+        a = screen.create_text((width/2)+3,78,text= "I N S T R U C T I O N S",font="fixedsys 75 bold",fill="grey33")
+        b = screen.create_text(width/2,75,text= "I N S T R U C T I O N S",font="fixedsys 75 bold",fill="white")
+        c = screen.create_text(width/2, 300, font="fixedsys 22",fill="white", text =
+            "MOVE YOUR PLAYER USING THE LEFT AND RIGHT ARROW KEYS, HOLD THE UP ARROW KEY\nTO GET A SPEED BOOST BUT KEEP IN MIND THAT YOU CANNOT TURN WHILE BOOSTING.\nYOU CAN PRESS THE ESCAPE KEY AT ANY TIME TO QUIT THE GAME, OR Q TO RETURN\nTO THE MENU.\n \nYOUR SHIP AUTOMATICALLY FIRES BULLETS, IF A BULLET HITS AN ASTEROID\nYOU WILL GET POINTS, THE SMALLER THE ASTEROID AND THE FASTER IT IS MOVING\nTHE MORE POINTS YOU WILL GET. YOU ALSO GAIN 10 POINTS FOR EACH SECOND\nYOU SURVIVE. IF YOU HIT THE EDGE OF THE SCREEN OR AN ASTEROID YOU WILL\nDIE AND THE GAME WILL BE OVER.") 
 
 
         screen.update()
