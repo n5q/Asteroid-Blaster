@@ -25,4 +25,4 @@ screen.create_rectangle(0,6,9,y-6,fill="grey66",outline="grey66")
 screen.create_rectangle(0,0,7,y+3,fill="black")
 
 screen.update()
-screen.postscript(file="arrow.ps", colormode='color')
+screen.postscript(file="arrow.gif", colormode='color')
