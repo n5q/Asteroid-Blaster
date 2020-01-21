@@ -8,17 +8,22 @@ from time import time, sleep
 # YOU WILL JUST HAVE TO PLAY WITHOUT SOUND :/
 
 from os import name
-if name == "nt":
+if name == "nt": Windows = True
+if Windows:
     from winsound import PlaySound, SND_LOOP, SND_ASYNC, SND_PURGE
 
 
 tk = Tk()
-width = tk.winfo_screenwidth()
-height = tk.winfo_screenheight()
+# width = tk.winfo_screenwidth()
+# height = tk.winfo_screenheight()
+width = 1280
+height = 1024
 tk.attributes("-fullscreen", True)
 screen = Canvas(tk, width=width, height=height, bg="black") 
 screen.pack()
 firstRun = True
+
+
 def menu():
     global loop, gameStarted, instruction
     gameStarted = False
@@ -26,7 +31,7 @@ def menu():
     instruction = False
     screen.delete("all")
     if firstRun == True:
-        if name == "nt":
+        if Windows:
             PlaySound('Loop.wav', SND_LOOP + SND_ASYNC)
     setInitialValues()
     while loop == True:
@@ -88,11 +93,12 @@ def instructions():
         screen.delete(a,b,c,d,e,f,g)
 
 def shipSelector():
-    global arrowR, arrowL
+    global arrowR, arrowL, loop
     loop = False
     screen.delete("all")
     screen.update()
     loop = True
+    instruction = True
     setInitialValues()
     while loop == True:
         if randint(1, 15) == 1:
@@ -115,7 +121,7 @@ def shipSelector():
         d = screen.create_text(width/2, height-155, text="START GAME",font="fixedsys 45",fill="white",activefill="grey50")
         e = screen.create_rectangle((width/2)-222,height-222,(width/2)+228,height-82,outline="green2",width=3)
         f = screen.create_rectangle((width/2)-225,height-225,(width/2)+225,height-85,outline="white",width=3)
-        g = screen.create_polygon(width/2,350,(width/2)-100,650,(width/2)+100,650,fill="color")  
+        g = screen.create_polygon(width/2,350,(width/2)-100,650,(width/2)+100,650,fill=color)  
 
         screen.update()
         sleep(0.01)
@@ -269,6 +275,9 @@ def keyPress(event):
         if name == "nt":
             PlaySound(None, SND_PURGE)
         tk.destroy()
+
+    elif event.keysym == "q":
+        menu()
 
 def keyUp(event):
     global maxPlayerSpeed
