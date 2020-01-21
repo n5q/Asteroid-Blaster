@@ -25,7 +25,8 @@ firstRun = True
 
 
 def menu():
-    global loop, gameStarted, instruction
+    global loop, gameStarted, instruction, selector
+    selector = False
     gameStarted = False
     loop = True
     instruction = False
@@ -67,6 +68,7 @@ def instructions():
     screen.delete("all")
     screen.update()
     loop = True
+
     setInitialValues()
     while loop == True:
         if randint(1, 15) == 1:
@@ -92,13 +94,17 @@ def instructions():
         clean()
         screen.delete(a,b,c,d,e,f,g)
 
+
 def shipSelector():
-    global arrowR, arrowL, loop
+    global arrowR, arrowL, loop, instruction, selector, ship
+    ship = 0
     loop = False
     screen.delete("all")
     screen.update()
     loop = True
     instruction = True
+    selector = True
+
     setInitialValues()
     while loop == True:
         if randint(1, 15) == 1:
@@ -110,9 +116,10 @@ def shipSelector():
         moveasteroids()
 
         ships = ["yellow","blue","red","green"]
+        color = ships[ship]
+
         screen.create_rectangle(0,0,150,height,fill="white",activefill="grey33")
         screen.create_rectangle(width-150,0,width,height,fill="white",activefill="grey33")
-        color = "yellow"
         arrowR = PhotoImage(file="arrowR.gif")
         arrowL = PhotoImage(file="arrowL.gif")
         a =screen.create_image(width-75,(height/2),image=arrowR)
@@ -130,18 +137,29 @@ def shipSelector():
 
 
 def motion(event):
-    global x,y,loop
+    global x,y,loop,ship
     x, y = event.x, event.y
 
 def click(event):
+    global ship
     if (x in range(round((width/2)-225),round((width/2)+225))) and y in range(height-225,height-85) and gameStarted == False:
         loop = False
-        shipSelector()
+        if selector == True:
+            runGame()
+        else:
+            shipSelector()
     elif (x in range(round((width/2)-250),round((width/2)+250))) and y in range(height-400,height-260) and gameStarted == False:
         if instruction == False:
             instructions()
-        else:
+        elif selector == False:
             menu()
+    if selector == True:
+        if x > width-150:
+            if ship == 3: ship = 0
+            else: ship += 1
+        if x < 150:
+            if ship == 0: ship = 3
+            else: ship -= 1
 
 
 def setInitialValues():
@@ -152,8 +170,7 @@ def setInitialValues():
     global angleOutput, n, r, X, Y, dtheta, xc, yc, theta, arrayX, arrayY
     global pos1, pos2, pos3, player, playerSpeedX, playerspeedY, maxPlayerSpeed
     global bullets, bulletAngle, bulletSpeedsX, bulletSpeedsY, lastBullet
-    global startTime
-
+    global startTime,coords1,coords2,coords3
 
     # else:
     radius = 15
@@ -224,7 +241,7 @@ def setInitialValues():
 
 def drawObjects():
 
-    global player, playerCircle, timeCounter, score, playerAngle, timer
+    global player, playerCircle, timeshiper, score, playerAngle, timer
 
     player = screen.create_polygon(coords1,coords2,coords3,fill="yellow")
     screen.create_text(50,30, text="SCORE", fill="white",font=("helvetica", 16))
@@ -439,10 +456,14 @@ def endGame():
 
 
 def runGame():
-    global end, points,spawnChance,enemyChance,gameRunning, player, pos1
+    
+    global end, points,spawnChance,enemyChance,gameRunning, player, pos1,loop
+    loop = False
+    screen.delete("all")
+    screen.update()
     setInitialValues()
     drawObjects()
-    scoreCounter = time()
+    scoreshiper = time()
     gameRunning = True
     while True:
         if randint(1, spawnChance) == 1:
@@ -460,10 +481,10 @@ def runGame():
         clean()
         points += collision()
         updateScore(points)
-        if (time() - scoreCounter) > 1:
+        if (time() - scoreshiper) > 1:
             points += 10
             updateScore(points)
-            scoreCounter = time()
+            scoreshiper = time()
         updateTime()
         screen.update()
         sleep(0.01)

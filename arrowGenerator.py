@@ -1,7 +1,12 @@
-from tkinter import Tk, Canvas, PhotoImage
-from random import randint
-from math import cos, sin, atan2, sqrt, pi, radians, degrees
-from time import time, sleep
+
+###  THIS SCRIPT GENERATES THE ARROW KEYS TO BE USED ON THE SHIP SELECTION SCREEN  ###
+###  THESE ARE NOT DRAWN IN THE GAME BECAUSE SINCE THE GAME RUNS IN FULL SCREEN    ###
+###  THE POSITION OF THE X AND Y VALUES WILL VARY DEPENDING ON THE RESOLUTION OF   ###
+###  THE MONITOR BEING USED MAKING THE UI INCONSISTENT AND BROKEN                  ###
+
+
+
+from tkinter import Tk, Canvas
 
 tk = Tk()
 screen = Canvas(tk, width=146, height=143, bg="white")
