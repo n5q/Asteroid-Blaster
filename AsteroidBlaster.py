@@ -35,9 +35,11 @@ def menu():
     global loop, gameStarted, instruction, selector
     selector = False
     gameStarted = False
-    loop = True
+    loop = False
     instruction = False
     screen.delete("all")
+    screen.update()
+    loop = True
     if firstRun == True:
         if Windows:
             PlaySound('Loop.mp3', SND_LOOP + SND_ASYNC)
@@ -75,7 +77,7 @@ def menu():
         screen.delete(a,b,c,d,e,f,g,h,i,j,k)
 
 def instructions():
-    global instruction,firstRun
+    global instruction,firstRun,loop
     firstRun = False
     instruction = True
     loop = False
@@ -133,7 +135,7 @@ def shipSelector():
         reloads = [0.5,1.5,0.2,1]
         rotations = [5,12,2,15]
         bulletSpeeds = [8,25,4,25]
-        speeds = [3,5,1,1.5]
+        speeds = [3,4,1,1.5]
         color = ships[ship]
 
         screen.create_rectangle(0,0,150,height,fill="white",activefill="grey33")
@@ -174,6 +176,7 @@ def click(event):
         else:
             shipSelector()
     elif (x in range(round((width/2)-250),round((width/2)+250))) and y in range(height-400,height-260) and gameStarted == False:
+        loop = False
         if instruction == False:
             instructions()
         elif selector == False:
@@ -253,13 +256,13 @@ def setInitialValues(*args):
             bulletCooldown = 1.5
             rotation = 12
             maxBulletSpeed = 25
-            maxPlayerSpeed = 5
+            maxPlayerSpeed = 4
 
         elif args[0] == "red":
             bulletCooldown = 0.2
-            rotation = 2
+            rotation = 3
             maxBulletSpeed = 4
-            maxPlayerSpeed = 1
+            maxPlayerSpeed = 0.5
 
         elif args[0] == "green":
             bulletCooldown = 1
