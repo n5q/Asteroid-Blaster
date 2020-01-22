@@ -129,6 +129,7 @@ def shipSelector():
         e = screen.create_rectangle((width/2)-222,height-222,(width/2)+228,height-82,outline="green2",width=3)
         f = screen.create_rectangle((width/2)-225,height-225,(width/2)+225,height-85,outline="white",width=3)
         g = screen.create_polygon(width/2,400,(width/2)-100,700,(width/2)+100,700,fill=color)  
+        h = screen.create_text(width/2,75,text="S E L E C T  S H I P",font="fixedsys 75 bold",fill="white")
 
         screen.update()
         sleep(0.01)
@@ -146,6 +147,8 @@ def click(event):
         loop = False
         if selector == True:
             runGame()
+        elif instruction == True:
+            pass
         else:
             shipSelector()
     elif (x in range(round((width/2)-250),round((width/2)+250))) and y in range(height-400,height-260) and gameStarted == False:
@@ -171,6 +174,7 @@ def setInitialValues(*args):
     global pos1, pos2, pos3, player, playerSpeedX, playerspeedY, maxPlayerSpeed
     global bullets, bulletAngle, bulletSpeedsX, bulletSpeedsY, lastBullet
     global startTime,coords1,coords2,coords3, maxBulletSpeed, boostSpeed, rotation
+    global maxPlayerSpeed1, bulletCooldown
 
 
     radius = 15
@@ -218,37 +222,40 @@ def setInitialValues(*args):
     if args:
         maxSpeed = 10
         if args[0] == "yellow":
-            maxBulletSpeed = 7
+            bulletCooldown = 0.5
             rotation = 5
-            boostSpeed = 6
-            maxPlayerSpeed = 2
+            maxBulletSpeed = 8
+            maxPlayerSpeed = 3
 
         elif args[0] == "blue":
-            maxBulletSpeed = 10
-            rotation = 3
-            boostSpeed = 8
-            maxPlayerSpeed = 4
+            bulletCooldown = 1.5
+            rotation = 12
+            maxBulletSpeed = 25
+            maxPlayerSpeed = 5
 
         elif args[0] == "red":
-            maxBulletSpeed = 5
-            rotation = 12
-            boostSpeed = 15
+            bulletCooldown = 0.2
+            rotation = 2
+            maxBulletSpeed = 4
             maxPlayerSpeed = 1
 
         elif args[0] == "green":
-            maxBulletSpeed = 10
-            rotation = 3
-            boostSpeed = 8
-            maxPlayerSpeed = 3
+            bulletCooldown = 1
+            rotation = 15
+            maxBulletSpeed = 25
+            maxPlayerSpeed = 1.5
+
+        maxPlayerSpeed1 = maxPlayerSpeed
+        boostSpeed = maxPlayerSpeed + 4
 
 def drawObjects():
 
     global player, playerCircle, score, playerAngle, timer
     player = screen.create_polygon(coords1,coords2,coords3,fill=color)
-    screen.create_text(50,30, text="SCORE", fill="white",font=("helvetica", 16))
-    screen.create_text(200,30, text="TIME SURVIVED", fill="white",font=("helvetica", 16))
-    score = screen.create_text(50,60, fill="white",font=("helvetica", 16))
-    timer = screen.create_text(200,60, fill="white",font=("helvetica", 16))
+    screen.create_text(50,30, text="SCORE", fill="white",font=("fixedsys", 16))
+    screen.create_text(200,30, text="TIME SURVIVED", fill="white",font=("fixedsys", 16))
+    score = screen.create_text(50,60, fill="white",font=("fixedsys", 16))
+    timer = screen.create_text(200,60, fill="white",font=("fixedsys", 16))
 
 def updateScore(scoreText):
     screen.itemconfig(score, text=str(scoreText))
@@ -300,7 +307,7 @@ def keyPress(event):
 def keyUp(event):
     global maxPlayerSpeed
     if event.keysym in ["w", "Up"]:
-        maxPlayerSpeed = 2
+        maxPlayerSpeed = maxPlayerSpeed1
 
 
 
@@ -347,7 +354,7 @@ def movePlayer():
 def spawnBullet():
     global b, bulletAngle, pos1, bulletSpeeds, bulletSpeedsX, bulletSpeedsY, lastBullet
 
-    if (time() - lastBullet) < 0.5:
+    if (time() - lastBullet) < bulletCooldown:
         pass
     else:
         b = screen.create_oval(coords1[0]+3,coords1[1]+3,coords1[0]-3,coords1[1]-3,fill="red",outline="red")
@@ -445,13 +452,13 @@ def endGame():
     for i in range(len(bullets)-1,-1,-1):
         screen.delete(bullets[i])
 
-    screen.create_polygon(coords1,coords2,coords3,fill="yellow")
+    screen.create_polygon(coords1,coords2,coords3,fill=color)
 
-    screen.create_text(width/2, height/2, text="GAME OVER", fill="white", font=("helvetica", 45))
+    screen.create_text(width/2, height/2, text="GAME OVER", fill="white", font=("fixedsys", 45))
 
-    screen.create_text(width/2, (height/2)+45, text="Score:  " + str(points), fill="white",font=("helvetica", 16))
+    screen.create_text(width/2, (height/2)+60, text="Score:  " + str(points), fill="white",font=("fixedsys", 22))
     
-    screen.create_text(width/2, (height/2)+90, text="Time Survived:  " + str(round(currentTime,2)) + " seconds", fill="white",font=("helvetica", 16))
+    screen.create_text(width/2, (height/2)+100, text="Time Survived:  " + str(round(currentTime,2)) + " seconds", fill="white",font=("fixedsys", 22))
 
 
 
