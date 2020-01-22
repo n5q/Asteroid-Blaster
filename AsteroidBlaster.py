@@ -9,7 +9,7 @@ from tkinter import Tk, Canvas, PhotoImage
 from random import randint
 from math import cos, sin, atan2, sqrt, pi, radians, degrees
 from time import time, sleep
-from json import loads
+from json import load, dump, loads
 
 # WINSOUND IS NOT AVALIABLE ON MACOS/LINUX SO IF YOU ARE PLAYING ON EITHER OF THOSE PLATFORMS
 # YOU WILL JUST HAVE TO PLAY WITHOUT SOUND :/
@@ -21,6 +21,7 @@ if Windows:
 
 
 tk = Tk()
+
 width = tk.winfo_screenwidth()
 height = tk.winfo_screenheight()
 
@@ -32,7 +33,7 @@ firstRun = True
 
 
 def menu():
-    global loop, gameStarted, instruction, selector
+    global loop, gameStarted, instruction, selector, highscore
     selector = False
     gameStarted = False
     loop = False
@@ -487,8 +488,17 @@ def endGame():
 
     screen.create_text(width/2, (height/2)+150, text="PRESS \"Q\" TO PLAY AGAIN OR \"ESC\" TO QUIT", fill="white",font="fixedsys 22")
 
-    with open("Highscores.json","w") as data:
-        data.write("{\n\"highScore\" : " + str(points) +"\n}")
+    with open("Highscores.json","r") as data:
+        obj = load(data)
+        hs = (obj["highScore"])
+
+    if points > hs:
+
+        with open("Highscores.json","w") as data:
+            #data.write("{\n\"highScore\" : " + str(points) +"\n}")
+            obj["highScore"] = points
+            dump(obj, data)
+
 
 
 
