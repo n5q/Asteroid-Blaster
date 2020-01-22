@@ -44,6 +44,7 @@ def menu():
             
         moveasteroids()
 
+
         a = screen.create_text((width/2)+3,103,text= "A S T E R O I D  B L A S T E R",font="fixedsys 75 bold",fill="grey33")
         b = screen.create_text(width/2,100,text= "A S T E R O I D  B L A S T E R",font="fixedsys 75 bold",fill="white")
         c = screen.create_text((width/2)+3, height-153, text="START GAME",font="fixedsys 45",fill="green2")
@@ -118,15 +119,16 @@ def shipSelector():
         ships = ["yellow","blue","red","green"]
         reloads = [0.5,1.5,0.2,1]
         rotations = [5,12,2,15]
-        speeds = []
+        bulletSpeeds = [8,25,4,25]
+        speeds = [3,5,1,1.5]
         color = ships[ship]
 
         screen.create_rectangle(0,0,150,height,fill="white",activefill="grey33")
         screen.create_rectangle(width-150,0,width,height,fill="white",activefill="grey33")
         arrowR = PhotoImage(file="arrowR.gif")
         arrowL = PhotoImage(file="arrowL.gif")
-        a =screen.create_image(width-75,(height/2),image=arrowR)
-        b =screen.create_image(75,height/2,image=arrowL)
+        a = screen.create_image(width-75,(height/2),image=arrowR)
+        b = screen.create_image(75,height/2,image=arrowL)
         c = screen.create_text((width/2)+3, height-153, text="START GAME",font="fixedsys 45",fill="green2")
         d = screen.create_text(width/2, height-155, text="START GAME",font="fixedsys 45",fill="white",activefill="grey50")
         e = screen.create_rectangle((width/2)-222,height-222,(width/2)+228,height-82,outline="green2",width=3)
@@ -135,11 +137,13 @@ def shipSelector():
         h = screen.create_text(width/2,75,text="S E L E C T  S H I P",font="fixedsys 75 bold",fill="white")
         i = screen.create_text((width/2)-225,200,text="Reload Time: " + str(reloads[ship]),font = "fixedsys 22",fill="white")
         j = screen.create_text((width/2)+225,200,text="Rotation Speed: " + str(rotations[ship]),font = "fixedsys 22",fill="white")
+        k = screen.create_text((width/2)-225,300,text="Bullet Speed: " + str(bulletSpeeds[ship]),font = "fixedsys 22",fill="white")
+        l = screen.create_text((width/2)-225,300,text="Movement Speed: " + str(speeds[ship]),font = "fixedsys 22",fill="white")
 
         screen.update()
         sleep(0.01)
         clean()
-        screen.delete(a,b,c,d,e,f,g,h,i,j)
+        screen.delete(a,b,c,d,e,f,g,h,i,j,k)
 
 
 def motion(event):
