@@ -476,11 +476,13 @@ def endGame():
 
     screen.create_polygon(coords1,coords2,coords3,fill=color)
 
-    screen.create_text(width/2, height/2, text="GAME OVER", fill="white", font=("fixedsys", 45))
+    screen.create_text(width/2, (height/2) - 50, text="GAME OVER", fill="white", font=("fixedsys", 45))
 
-    screen.create_text(width/2, (height/2)+60, text="Score:  " + str(points), fill="white",font=("fixedsys", 22))
+    screen.create_text(width/2, (height/2)+50, text="Score:  " + str(points), fill="white",font="fixedsys 22")
     
-    screen.create_text(width/2, (height/2)+100, text="Time Survived:  " + str(round(currentTime,2)) + " seconds", fill="white",font=("fixedsys", 22))
+    screen.create_text(width/2, (height/2)+100, text="Time Survived:  " + str(round(currentTime,2)) + " seconds", fill="white",font="fixedsys 22")
+
+    screen.create_text(width/2, (height/2)+150, text="PRESS \"Q\" TO PLAY AGAIN OR \"ESC\" TO QUIT", fill="white",font="fixedsys 22")
 
     with open("Highscores.json","w") as data:
         data.write("{\n\"highScore\" : " + str(points) +"\n}")
