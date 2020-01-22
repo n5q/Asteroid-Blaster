@@ -1,4 +1,10 @@
 
+###  THE UI AND FONTS WILL BE BROKEN ON SCREENS WITH RESOLUTIONS LOWER THAN   ###
+###  1280x1024 OR SMALL SCREENS SUCH AS LAPTOPS BECAUSE I HAVE NOT TESTED     ###
+###  ON ANYTHING SMALLER. MOST FONTS ARE BROKEN ON MAC/LINUX BECAUSE FIXEDSYS ###
+###  IS A WINDOWS FONT                                                        ###
+
+
 from tkinter import Tk, Canvas, PhotoImage
 from random import randint
 from math import cos, sin, atan2, sqrt, pi, radians, degrees
@@ -14,10 +20,10 @@ if Windows:
 
 
 tk = Tk()
-# width = tk.winfo_screenwidth()
-# height = tk.winfo_screenheight()
-width = 1280
-height = 1024
+width = tk.winfo_screenwidth()
+height = tk.winfo_screenheight()
+# width = 1280
+# height = 1024
 tk.attributes("-fullscreen", True)
 screen = Canvas(tk, width=width, height=height, bg="black") 
 screen.pack()
@@ -138,7 +144,7 @@ def shipSelector():
         i = screen.create_text((width/2)-225,200,text="Reload Time: " + str(reloads[ship]),font = "fixedsys 22",fill="white")
         j = screen.create_text((width/2)+225,200,text="Rotation Speed: " + str(rotations[ship]),font = "fixedsys 22",fill="white")
         k = screen.create_text((width/2)-225,300,text="Bullet Speed: " + str(bulletSpeeds[ship]),font = "fixedsys 22",fill="white")
-        l = screen.create_text((width/2)-225,300,text="Movement Speed: " + str(speeds[ship]),font = "fixedsys 22",fill="white")
+        # l = screen.create_text((width/2)+225,300,text="Movement Speed: " + str(speeds[ship]),font = "fixedsys 22",fill="white")
 
         screen.update()
         sleep(0.01)
