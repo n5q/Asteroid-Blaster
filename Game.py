@@ -128,7 +128,7 @@ def shipSelector():
         d = screen.create_text(width/2, height-155, text="START GAME",font="fixedsys 45",fill="white",activefill="grey50")
         e = screen.create_rectangle((width/2)-222,height-222,(width/2)+228,height-82,outline="green2",width=3)
         f = screen.create_rectangle((width/2)-225,height-225,(width/2)+225,height-85,outline="white",width=3)
-        g = screen.create_polygon(width/2,350,(width/2)-100,650,(width/2)+100,650,fill=color)  
+        g = screen.create_polygon(width/2,400,(width/2)-100,700,(width/2)+100,700,fill=color)  
 
         screen.update()
         sleep(0.01)
