@@ -21,10 +21,10 @@ if Windows:
 
 
 tk = Tk()
-# width = tk.winfo_screenwidth()
-# height = tk.winfo_screenheight()
-width = 1280
-height = 1024
+width = tk.winfo_screenwidth()
+height = tk.winfo_screenheight()
+
+
 tk.attributes("-fullscreen", True)
 screen = Canvas(tk, width=width, height=height, bg="black") 
 screen.pack()
