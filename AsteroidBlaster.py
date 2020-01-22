@@ -549,4 +549,3 @@ screen.bind("<Button 1>", click)
 screen.pack()
 screen.focus_set()
 screen.mainloop()
-
