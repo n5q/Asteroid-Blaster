@@ -133,9 +133,9 @@ def shipSelector():
         moveasteroids()
 
         ships = ["yellow","blue","red","green"]
-        reloads = [0.5,1.5,0.2,1]
+        reloads = [0.3,1.5,0.2,1]
         rotations = [5,12,2,15]
-        bulletSpeeds = [8,25,4,25]
+        bulletSpeeds = [15,25,4,25]
         speeds = [3,4,1,1.5]
         color = ships[ship]
 
@@ -210,7 +210,7 @@ def setInitialValues(*args):
     minRadius = 15
     maxRadius = 30
     maxSpeed = 20
-    spawnChance = 20
+    spawnChance = 30
     points = 0  
     n=360
     r= -20
@@ -248,9 +248,9 @@ def setInitialValues(*args):
     if args:
         maxSpeed = 10
         if args[0] == "yellow":
-            bulletCooldown = 0.5
+            bulletCooldown = 0.3
             rotation = 5
-            maxBulletSpeed = 8
+            maxBulletSpeed = 15
             maxPlayerSpeed = 3
 
         elif args[0] == "blue":
@@ -549,3 +549,4 @@ screen.bind("<Button 1>", click)
 screen.pack()
 screen.focus_set()
 screen.mainloop()
+
