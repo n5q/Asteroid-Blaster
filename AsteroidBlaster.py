@@ -133,7 +133,7 @@ def shipSelector():
         moveasteroids()
 
         ships = ["yellow","blue","red","green"]
-        reloads = [0.3,1.5,0.2,1]
+        reloads = [0.3,1.5,0.2,0.2]
         rotations = [5,12,2,15]
         bulletSpeeds = [15,25,4,25]
         speeds = [3,4,1,1.5]
@@ -209,13 +209,13 @@ def setInitialValues(*args):
     speed = []
     minRadius = 15
     maxRadius = 30
-    maxSpeed = 20
+    maxSpeed = 30
     spawnChance = 30
     points = 0  
     n=360
     r= -20
-    X = 380
-    Y = 380
+    X = width/2
+    Y = height-350
     dtheta = 2*pi/n
     xc = X - r 
     yc = Y - r
@@ -266,18 +266,20 @@ def setInitialValues(*args):
             maxPlayerSpeed = 0.5
 
         elif args[0] == "green":
-            bulletCooldown = 1
+            bulletCooldown = 0.2
             rotation = 15
             maxBulletSpeed = 25
             maxPlayerSpeed = 1.5
 
         maxPlayerSpeed1 = maxPlayerSpeed
         boostSpeed = maxPlayerSpeed + 4
+        maxSpeed = 10
 
 def drawObjects():
 
     global player, playerCircle, score, playerAngle, timer
     player = screen.create_polygon(coords1,coords2,coords3,fill=color)
+
     screen.create_text(50,30, text="SCORE", fill="white",font=("fixedsys", 22))
     screen.create_text(250,30, text="TIME SURVIVED", fill="white",font=("fixedsys", 22))
     score = screen.create_text(50,60, fill="white",font=("fixedsys", 20))
