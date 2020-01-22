@@ -116,6 +116,9 @@ def shipSelector():
         moveasteroids()
 
         ships = ["yellow","blue","red","green"]
+        reloads = [0.5,1.5,0.2,1]
+        rotations = [5,12,2,15]
+        speeds = []
         color = ships[ship]
 
         screen.create_rectangle(0,0,150,height,fill="white",activefill="grey33")
@@ -130,11 +133,13 @@ def shipSelector():
         f = screen.create_rectangle((width/2)-225,height-225,(width/2)+225,height-85,outline="white",width=3)
         g = screen.create_polygon(width/2,400,(width/2)-100,700,(width/2)+100,700,fill=color)  
         h = screen.create_text(width/2,75,text="S E L E C T  S H I P",font="fixedsys 75 bold",fill="white")
+        i = screen.create_text((width/2)-225,200,text="Reload Time: " + str(reloads[ship]),font = "fixedsys 22",fill="white")
+        j = screen.create_text((width/2)+225,200,text="Rotation Speed: " + str(rotations[ship]),font = "fixedsys 22",fill="white")
 
         screen.update()
         sleep(0.01)
         clean()
-        screen.delete(a,b,c,d,e,f,g)
+        screen.delete(a,b,c,d,e,f,g,h,i,j)
 
 
 def motion(event):
