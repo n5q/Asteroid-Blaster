@@ -9,6 +9,7 @@ from tkinter import Tk, Canvas, PhotoImage
 from random import randint
 from math import cos, sin, atan2, sqrt, pi, radians, degrees
 from time import time, sleep
+from json import loads
 
 # WINSOUND IS NOT AVALIABLE ON MACOS/LINUX SO IF YOU ARE PLAYING ON EITHER OF THOSE PLATFORMS
 # YOU WILL JUST HAVE TO PLAY WITHOUT SOUND :/
@@ -40,6 +41,11 @@ def menu():
     if firstRun == True:
         if Windows:
             PlaySound('Loop.mp3', SND_LOOP + SND_ASYNC)
+
+    with open("Highscores.json","r") as data:
+        obj = loads(data.read())
+        highscore = str(obj["highScore"])
+
     setInitialValues()
     while loop == True:
         if randint(1, 8) == 1:
@@ -61,11 +67,12 @@ def menu():
         h = screen.create_rectangle((width/2)-250,height-400,(width/2)+250,height-260,outline="white",width=3)
         i = screen.create_text((width/2)+3,height-327, text="INSTRUCTIONS",font="fixedsys 45",fill="gold",activefill="grey50")
         j = screen.create_text(width/2,height-330, text="INSTRUCTIONS",font="fixedsys 45",fill="white",activefill="grey50")
-        
+        k = screen.create_text(width/2,height-650,text="HIGHSCORE: " + highscore,font="fixedsys 36",fill="white")
+
         screen.update()
         sleep(0.01)
         clean()
-        screen.delete(a,b,c,d,e,f,g,h,i)
+        screen.delete(a,b,c,d,e,f,g,h,i,j,k)
 
 def instructions():
     global instruction,firstRun
@@ -149,7 +156,7 @@ def shipSelector():
         screen.update()
         sleep(0.01)
         clean()
-        screen.delete(a,b,c,d,e,f,g,h,i,j,l)
+        screen.delete(a,b,c,d,e,f,g,h,i,j,k,l)
 
 
 def motion(event):
@@ -474,6 +481,9 @@ def endGame():
     screen.create_text(width/2, (height/2)+60, text="Score:  " + str(points), fill="white",font=("fixedsys", 22))
     
     screen.create_text(width/2, (height/2)+100, text="Time Survived:  " + str(round(currentTime,2)) + " seconds", fill="white",font=("fixedsys", 22))
+
+    with open("Highscores.json","w") as data:
+        data.write("{\n\"highScore\" : " + str(points) +"\n}")
 
 
 
