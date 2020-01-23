@@ -80,7 +80,9 @@ def menu():
     #ASTEROIDS IN BACKGROUND
     setInitialValues()
     while loop == True:
+        
         if randint(1, 8) == 1:
+
             if randint(1,2) == 1:
                 drawasteroidR()
             else:
@@ -123,9 +125,12 @@ def instructions():
     #ASTEROIDS IN BACKGROUND
     setInitialValues()
     while loop == True:
+
         if randint(1, 8) == 1:
+
             if randint(1,2) == 1:
                 drawasteroidR()
+
             else:
                 drawasteroidL()
             
@@ -164,6 +169,7 @@ def shipSelector():
     #ASTEROIDS IN BACKGROUND
     setInitialValues()
     while loop == True:
+
         if randint(1, 8) == 1:
             if randint(1,2) == 1:
                 drawasteroidR()
@@ -226,22 +232,29 @@ def click(event):
     global ship
     if (x in range(round((width/2)-225),round((width/2)+225))) and y in range(height-225,height-85) and gameStarted == False:
         loop = False
+
         if selector == True:
             runGame()
         elif instruction == True:
             pass
         else:
             shipSelector()
+
     elif (x in range(round((width/2)-250),round((width/2)+250))) and y in range(height-400,height-260) and gameStarted == False:
         loop = False
+
         if instruction == False:
             instructions()
+
         elif selector == False:
             menu()
+
     if selector == True:
+
         if x > width-150:
             if ship == 3: ship = 0
             else: ship += 1
+
         if x < 150:
             if ship == 0: ship = 3
             else: ship -= 1
@@ -267,16 +280,21 @@ def setInitialValues(*args):
     maxSpeed = 30
     spawnChance = 30
     points = 0  
+
     n=360
     r= -20
     X = width/2
     Y = height-350
+
     dtheta = 2*pi/n
     xc = X - r 
     yc = Y - r
+
     theta = 0
+
     arrayX = [X]
     arrayY = [Y]
+
     for i in range(n):
         #CIRCULAR MOTION 
         theta += dtheta
@@ -285,18 +303,23 @@ def setInitialValues(*args):
         Y = r*sin(theta) + yc
         arrayX.append(X)
         arrayY.append(Y)
+
     pos1 = 90
     pos2 = 305
     pos3 = 233
+
     bullets = []
     bulletAngle = []
     bulletSpeedsX = []
     bulletSpeedsY = []
+
     coords1 = (arrayX[pos1], arrayY[pos1])
     coords2 = (arrayX[pos2], arrayY[pos2])
     coords3 = (arrayX[pos3], arrayY[pos3])
+
     playerSpeedX = 0
     playerspeedY = -1
+
     lastBullet = time()
     startTime = time()
     
@@ -357,9 +380,11 @@ def keyPress(event):
     global pos1, pos2, pos3, maxPlayerSpeed,rotation
 
     if event.keysym in ["a","Left"]:
+
         pos1 -= rotation
         pos2 -= rotation
         pos3 -= rotation
+
         if pos1 <= 0:
             pos1 += 359
         if pos2 <= 0:
@@ -368,9 +393,11 @@ def keyPress(event):
             pos3 += 359 
 
     elif event.keysym in ["d","Right"]:
+
         pos1 += rotation
         pos2 += rotation
         pos3 += rotation
+
         if pos1 >= 360:
             pos1 -= 359
         if pos2 >= 360:
@@ -403,7 +430,9 @@ def drawasteroidR():
     x = 0 - 100
     y = randint(0, height)
     r = randint(minRadius, maxRadius)
+
     draw = screen.create_oval(x-r, y-r, x+r, y+r, outline="grey69",width="4",fill="grey20")
+
     asteroid.append(draw)
     radius.append(r)
     speed.append(randint(1,maxSpeed)*-1)
@@ -412,7 +441,9 @@ def drawasteroidL():
     x = width + 100
     y = randint(0, height)
     r = randint(minRadius, maxRadius)
+
     draw = screen.create_oval(x-r, y-r, x+r, y+r, outline="grey69",width="4",fill="grey20")
+
     asteroid.append(draw)
     radius.append(r)
     speed.append(randint(1,maxSpeed))
@@ -426,6 +457,7 @@ def moveasteroids():
 def movePlayer():
     global coords1, coords2, coords3, player, playerspeedY, playerSpeedX, arrayX
     global arrayY, maxPlayerSpeed
+
     coords1 = (arrayX[pos1], arrayY[pos1])
     coords2 = (arrayX[pos2], arrayY[pos2])
     coords3 = (arrayX[pos3], arrayY[pos3])
@@ -435,8 +467,10 @@ def movePlayer():
     except: pass
 
     player = screen.create_polygon(coords1,coords2,coords3,fill=color)
+
     playerSpeedX = -(maxPlayerSpeed * cos(radians(pos1)))
     playerspeedY = -(maxPlayerSpeed * sin(radians(pos1)))
+
     for i in range(len(arrayX)):
         arrayX[i] += playerSpeedX
         arrayY[i] += playerspeedY
@@ -449,6 +483,7 @@ def spawnBullet():
         pass
     else:
         b = screen.create_oval(coords1[0]+3,coords1[1]+3,coords1[0]-3,coords1[1]-3,fill="red",outline="red")
+
         bullets.append(b)
         bulletAngle.append(pos1)
 
@@ -492,7 +527,9 @@ def deleteAsteroid(i):
 
 #DELETE ALL REFRENCES OF A BULLET
 def deleteBullet(i):
+
     global bullets, bulletAngle, bulletSpeedsX, bulletSpeedsY
+
     del bulletAngle[i]
     del bulletSpeedsX[i]
     del bulletSpeedsY[i]
@@ -504,11 +541,13 @@ def clean():
     for i in range(len(asteroid)-1, -1, -1):
         x = getCoords(asteroid[i])
         x = x[0]
+
         if x < -100 or x > width+100:
             deleteAsteroid(i)
 
     for i in range(len(bullets)-1, -1, -1):
         x = getCoords(bullets[i])
+
         if ((x[0] < -20 or x[0] > width + 20) or (x[1] < -20 or x[1] > height + 20)):
             deleteBullet(i)
 
@@ -527,12 +566,14 @@ def getDistance(a,b):
 #COLLISION HANDLER
 def collision():
     points = 0
+
     for i in range(len(asteroid)-1, -1, -1):
         if getDistance(player, asteroid[i]) < (15 + radius[i]):
             endGame()
     try:
         for i in range(len(asteroid)-1, -1, -1):
             for j in range(len(bullets)-1, -1, -1):
+
                 if getDistance(bullets[j], asteroid[i]) < (15 + radius[i]):
                     points += (radius[i] + speed[i])
                     deleteAsteroid(i)
@@ -542,6 +583,7 @@ def collision():
 
 #STOP GAME IF PLAYER COLLIDED
 def endGame():
+
     global bullets, gameRunning
     PlaySound(None, SND_PURGE)
     PlaySound("Death.mp3", SND_ASYNC)
@@ -580,15 +622,19 @@ def endGame():
 def runGame():
     
     global end, points,spawnChance,gameRunning, player, pos1,loop
+
     PlaySound(None, SND_PURGE)
     PlaySound("Splash.mp3", SND_ASYNC + SND_LOOP)
+
     loop = False
     screen.delete("all")
     screen.update()
     setInitialValues(color)
     drawObjects()
+
     scoreshiper = time()
     gameRunning = True
+
     while True:
         if randint(1, spawnChance) == 1:
             if randint(1,2) == 1:
@@ -602,17 +648,21 @@ def runGame():
             spawnBullet()
             moveBullets()
             checkEdges()
+
         clean()
         points += collision()
         updateScore(points)
+
         if (time() - scoreshiper) > 1:
             points += 10
             updateScore(points)
             scoreshiper = time()
+
         updateTime()
         screen.update()
         sleep(0.01)
         screen.delete(player)
+
     endGame()
 
 #KEYBINDINGS
