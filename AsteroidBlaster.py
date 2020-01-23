@@ -1,8 +1,28 @@
 
+#################################################################################
+###  ASTEROID BLASTER                                                         ###
+###  GRADE 11 CS SUMMATIVE                                                    ###        
+###  NASIF QADRI                                                              ###
+###  https://github.com/NasifQadri/Asteroid-Blaster                           ###                                
+###  LAST MODIFIED:   THU JAN 23 02:36:42 2020 UTC                            ###                                
+#################################################################################
+###  NOTE:                                                                    ###   
+###                                                                           ###       
 ###  THE UI AND FONTS WILL BE BROKEN ON SCREENS WITH RESOLUTIONS LOWER THAN   ###
 ###  1280x1024 OR SMALL SCREENS SUCH AS LAPTOPS BECAUSE I HAVE NOT TESTED     ###
 ###  ON ANYTHING SMALLER. MOST FONTS ARE BROKEN ON MAC/LINUX BECAUSE FIXEDSYS ###
 ###  IS A WINDOWS FONT                                                        ###
+###                                                                           ###      
+###  The music used in ths game is provided by SpiffTune                      ###
+###  (https://soundcloud.com/spifftune) and the death effect is provided by   ###
+###  Toby Fox (https://tobyfox.bandcamp.com/)                                 ###
+###                                                                           ###
+###  Copyright Disclaimer under section 107 of the Copyright Act of 1976,     ###
+###  allowance is made for “fair use” for purposes such as criticism,         ###
+###  comment, news reporting, teaching, scholarship, education and research.  ###
+###  Fair use is a use permitted by copyright statute that might otherwise    ###
+###  be infringing.                                                           ###
+#################################################################################
 
 
 from tkinter import Tk, Canvas, PhotoImage
@@ -123,7 +143,7 @@ def instructions():
         screen.update()
         sleep(0.01)
         clean()
-        screen.delete(title1,title2,insts,backBtn1,back,backTxt1,backTxt2)
+        screen.delete(title1,title2,insts,backBtn1,backBtn2,backTxt1,backTxt2)
 
 
 def shipSelector():
@@ -165,13 +185,13 @@ def shipSelector():
         img1 = screen.create_image(width-75,(height/2),image=arrowR)
         img2 = screen.create_image(75,height/2,image=arrowL)
 
+        playerSelection = screen.create_polygon(width/2,400,(width/2)-100,700,(width/2)+100,700,fill=color)  
+
         startTxt1 = screen.create_text((width/2)+3, height-153, text="START GAME",font="fixedsys 45",fill="green2")
         startTxt2 = screen.create_text(width/2, height-155, text="START GAME",font="fixedsys 45",fill="white",activefill="grey50")
 
         startBtn1 = screen.create_rectangle((width/2)-222,height-222,(width/2)+228,height-82,outline="green2",width=3)
         startBtn2 = screen.create_rectangle((width/2)-225,height-225,(width/2)+225,height-85,outline="white",width=3)
-
-        playerSelection = screen.create_polygon(width/2,400,(width/2)-100,700,(width/2)+100,700,fill=color)  
 
         title = screen.create_text(width/2,75,text="S E L E C T  S H I P",font="fixedsys 75 bold",fill="white")
 
@@ -359,6 +379,8 @@ def keyPress(event):
         tk.destroy()
 
     elif event.keysym == "q":
+        PlaySound(None, SND_PURGE)
+        PlaySound("Loop.mp3", SND_ASYNC + SND_LOOP)
         menu()
 
 #STOP BOOST WHEN UP KEY IS RELEASED
@@ -521,7 +543,6 @@ def endGame():
 
     #I HAVE NO IDEA WHY THIS LINE IS NEEDED BUT THE GAME WILL CRASH WITHOUT IT SO DO NOT DELETE IT (IT JUST DRAWS THE PLAYER AGAIN)
     screen.create_polygon(coords1,coords2,coords3,fill=color)
-
 
     screen.create_text(width/2, (height/2) - 50, text="GAME OVER", fill="white", font=("fixedsys", 45))
 
