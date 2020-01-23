@@ -251,8 +251,7 @@ def setInitialValues(*args):
 
     global radius, asteroid, radius, speed, minRadius, maxRadius
     global spawnChance, points, end, maxSpeed
-    global playerAngle, angles, playerStart, xCentre, yCentre, line, arc
-    global angleOutput, n, r, X, Y, dtheta, xc, yc, theta, arrayX, arrayY
+    global n, r, X, Y, dtheta, xc, yc, theta, arrayX, arrayY
     global pos1, pos2, pos3, player, playerSpeedX, playerspeedY, maxPlayerSpeed
     global bullets, bulletAngle, bulletSpeedsX, bulletSpeedsY, lastBullet
     global startTime,coords1,coords2,coords3, maxBulletSpeed, boostSpeed, rotation
@@ -334,7 +333,7 @@ def setInitialValues(*args):
 #DRAW INITIAL OBJECTS
 def drawObjects():
 
-    global player, playerCircle, score, playerAngle, timer
+    global player, playerCircle, score, timer
     player = screen.create_polygon(coords1,coords2,coords3,fill=color)
 
     screen.create_text(50,30, text="SCORE", fill="white",font=("fixedsys", 22))
