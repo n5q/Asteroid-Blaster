@@ -585,8 +585,9 @@ def collision():
 def endGame():
 
     global bullets, gameRunning
-    PlaySound(None, SND_PURGE)
-    PlaySound("Death.mp3", SND_ASYNC)
+    if Windows:
+        PlaySound(None, SND_PURGE)
+        PlaySound("Death.mp3", SND_ASYNC)
     gameRunning = False
 
     for i in range(len(bullets)-1,-1,-1):
@@ -622,9 +623,9 @@ def endGame():
 def runGame():
     
     global end, points,spawnChance,gameRunning, player, pos1,loop
-
-    PlaySound(None, SND_PURGE)
-    PlaySound("Splash.mp3", SND_ASYNC + SND_LOOP)
+    if Windows:
+        PlaySound(None, SND_PURGE)
+        PlaySound("Splash.mp3", SND_ASYNC + SND_LOOP)
 
     loop = False
     screen.delete("all")
