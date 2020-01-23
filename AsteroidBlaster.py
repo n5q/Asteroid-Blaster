@@ -31,7 +31,7 @@ screen = Canvas(tk, width=width, height=height, bg="black")
 screen.pack()
 firstRun = True
 
-
+#MAIN MENU SCREEN
 def menu():
     global loop, gameStarted, instruction, selector, highscore
     selector = False
@@ -41,14 +41,18 @@ def menu():
     screen.delete("all")
     screen.update()
     loop = True
+
+    #ONLY STARTS THE LOOP THE FIRST TIME THE MENU APPEARS
     if firstRun == True:
         if Windows:
             PlaySound('Loop.mp3', SND_LOOP + SND_ASYNC)
 
+    #READ HIGHSCORE FROM JSON
     with open("Highscores.json","r") as data:
         obj = loads(data.read())
         highscore = str(obj["highScore"])
 
+    #ASTEROIDS IN BACKGROUND
     setInitialValues()
     while loop == True:
         if randint(1, 8) == 1:
@@ -59,23 +63,28 @@ def menu():
             
         moveasteroids()
 
+        #MENU ITEMS
+        title1 = screen.create_text((width/2)+3,103,text= "A S T E R O I D  B L A S T E R",font="fixedsys 75 bold",fill="grey33")
+        title2 = screen.create_text(width/2,100,text= "A S T E R O I D  B L A S T E R",font="fixedsys 75 bold",fill="white")
 
-        a = screen.create_text((width/2)+3,103,text= "A S T E R O I D  B L A S T E R",font="fixedsys 75 bold",fill="grey33")
-        b = screen.create_text(width/2,100,text= "A S T E R O I D  B L A S T E R",font="fixedsys 75 bold",fill="white")
-        c = screen.create_text((width/2)+3, height-153, text="START GAME",font="fixedsys 45",fill="green2")
-        d = screen.create_text(width/2, height-155, text="START GAME",font="fixedsys 45",fill="white",activefill="grey50")
-        e = screen.create_rectangle((width/2)-222,height-222,(width/2)+228,height-82,outline="green2",width=3)
-        f = screen.create_rectangle((width/2)-225,height-225,(width/2)+225,height-85,outline="white",width=3)
-        g = screen.create_rectangle((width/2)-247,height-397,(width/2)+253,height-257,outline="gold",width=3)
-        h = screen.create_rectangle((width/2)-250,height-400,(width/2)+250,height-260,outline="white",width=3)
-        i = screen.create_text((width/2)+3,height-327, text="INSTRUCTIONS",font="fixedsys 45",fill="gold",activefill="grey50")
-        j = screen.create_text(width/2,height-330, text="INSTRUCTIONS",font="fixedsys 45",fill="white",activefill="grey50")
-        k = screen.create_text(width/2,height-650,text="HIGHSCORE: " + highscore,font="fixedsys 36",fill="white")
+        startTxt1 = screen.create_text((width/2)+3, height-153, text="START GAME",font="fixedsys 45",fill="green2")
+        startTxt2 = screen.create_text(width/2, height-155, text="START GAME",font="fixedsys 45",fill="white",activefill="grey50")
+
+        startBtn1 = screen.create_rectangle((width/2)-222,height-222,(width/2)+228,height-82,outline="green2",width=3)
+        startBtn2 = screen.create_rectangle((width/2)-225,height-225,(width/2)+225,height-85,outline="white",width=3)
+
+        instBtn1 = screen.create_rectangle((width/2)-247,height-397,(width/2)+253,height-257,outline="gold",width=3)
+        instBtn2 = screen.create_rectangle((width/2)-250,height-400,(width/2)+250,height-260,outline="white",width=3)
+
+        instTxt1 = screen.create_text((width/2)+3,height-327, text="INSTRUCTIONS",font="fixedsys 45",fill="gold",activefill="grey50")
+        instTxt2 = screen.create_text(width/2,height-330, text="INSTRUCTIONS",font="fixedsys 45",fill="white",activefill="grey50")
+
+        hs = screen.create_text(width/2,height-650,text="HIGHSCORE: " + highscore,font="fixedsys 36",fill="white")
 
         screen.update()
         sleep(0.01)
         clean()
-        screen.delete(a,b,c,d,e,f,g,h,i,j,k)
+        screen.delete(title1,title2,startTxt1,startTxt2,startBtn1,startBtn2,instBtn1,instBtn2,instTxt1,instTxt2,hs)
 
 def instructions():
     global instruction,firstRun,loop
@@ -86,6 +95,7 @@ def instructions():
     screen.update()
     loop = True
 
+    #ASTEROIDS IN BACKGROUND
     setInitialValues()
     while loop == True:
         if randint(1, 8) == 1:
@@ -96,20 +106,24 @@ def instructions():
             
         moveasteroids()   
 
-        a = screen.create_text((width/2)+3,78,text= "I N S T R U C T I O N S",font="fixedsys 75 bold",fill="grey33")
-        b = screen.create_text(width/2,75,text= "I N S T R U C T I O N S",font="fixedsys 75 bold",fill="white")
-        c = screen.create_text(width/2, 400, font="fixedsys 22",fill="white", text =
+        #INSTRUCTION SCREEN ITEMS
+        title1 = screen.create_text((width/2)+3,78,text= "I N S T R U C T I O N S",font="fixedsys 75 bold",fill="grey33")
+        title2 = screen.create_text(width/2,75,text= "I N S T R U C T I O N S",font="fixedsys 75 bold",fill="white")
+
+        insts = screen.create_text(width/2, 400, font="fixedsys 22",fill="white", text =
             "MOVE YOUR PLAYER USING THE LEFT AND RIGHT ARROW KEYS, HOLD THE UP ARROW KEY\nTO GET A SPEED BOOST BUT KEEP IN MIND THAT YOU CANNOT TURN WHILE BOOSTING.\nYOU CAN PRESS THE ESCAPE KEY AT ANY TIME TO QUIT THE GAME, OR Q TO RETURN\nTO THE MENU.\n \nYOUR SHIP AUTOMATICALLY FIRES BULLETS, IF A BULLET HITS AN ASTEROID\nYOU WILL GET POINTS, THE SMALLER THE ASTEROID AND THE FASTER IT IS MOVING\nTHE MORE POINTS YOU WILL GET. YOU ALSO GAIN 10 POINTS FOR EACH SECOND\nYOU SURVIVE. IF YOU HIT THE EDGE OF THE SCREEN OR AN ASTEROID YOU WILL\nDIE AND THE GAME WILL BE OVER.") 
-        d = screen.create_rectangle((width/2)-222,height-397,(width/2)+228,height-257,outline="gold",width=3)
-        e = screen.create_rectangle((width/2)-225,height-400,(width/2)+225,height-260,outline="white",width=3)
-        f = screen.create_text((width/2)+3,height-327, text="BACK",font="fixedsys 45",fill="gold",activefill="grey50")
-        g = screen.create_text(width/2,height-330, text="BACK",font="fixedsys 45",fill="white",activefill="grey50")
+        
+        backBtn1 = screen.create_rectangle((width/2)-222,height-397,(width/2)+228,height-257,outline="gold",width=3)
+        backBtn2 = screen.create_rectangle((width/2)-225,height-400,(width/2)+225,height-260,outline="white",width=3)
+
+        backTxt1 = screen.create_text((width/2)+3,height-327, text="BACK",font="fixedsys 45",fill="gold",activefill="grey50")
+        backTxt2 = screen.create_text(width/2,height-330, text="BACK",font="fixedsys 45",fill="white",activefill="grey50")
 
 
         screen.update()
         sleep(0.01)
         clean()
-        screen.delete(a,b,c,d,e,f,g)
+        screen.delete(title1,title2,insts,backBtn1,back,backTxt1,backTxt2)
 
 
 def shipSelector():
@@ -122,6 +136,7 @@ def shipSelector():
     instruction = True
     selector = True
 
+    #ASTEROIDS IN BACKGROUND
     setInitialValues()
     while loop == True:
         if randint(1, 8) == 1:
@@ -132,6 +147,7 @@ def shipSelector():
             
         moveasteroids()
 
+        #VALUES FOR EACH SHIP
         ships = ["yellow","blue","red","green"]
         reloads = [0.3,1.5,0.2,0.2]
         rotations = [5,12,2,15]
@@ -139,33 +155,43 @@ def shipSelector():
         speeds = [3,4,1,1.5]
         color = ships[ship]
 
-        screen.create_rectangle(0,0,150,height,fill="white",activefill="grey33")
-        screen.create_rectangle(width-150,0,width,height,fill="white",activefill="grey33")
+        #SCREEN ITEMS
+        L = screen.create_rectangle(0,0,150,height,fill="white",activefill="grey33")
+        R = screen.create_rectangle(width-150,0,width,height,fill="white",activefill="grey33")
+
         arrowR = PhotoImage(file="arrowR.gif")
         arrowL = PhotoImage(file="arrowL.gif")
-        a = screen.create_image(width-75,(height/2),image=arrowR)
-        b = screen.create_image(75,height/2,image=arrowL)
-        c = screen.create_text((width/2)+3, height-153, text="START GAME",font="fixedsys 45",fill="green2")
-        d = screen.create_text(width/2, height-155, text="START GAME",font="fixedsys 45",fill="white",activefill="grey50")
-        e = screen.create_rectangle((width/2)-222,height-222,(width/2)+228,height-82,outline="green2",width=3)
-        f = screen.create_rectangle((width/2)-225,height-225,(width/2)+225,height-85,outline="white",width=3)
-        g = screen.create_polygon(width/2,400,(width/2)-100,700,(width/2)+100,700,fill=color)  
-        h = screen.create_text(width/2,75,text="S E L E C T  S H I P",font="fixedsys 75 bold",fill="white")
-        i = screen.create_text((width/2)-225,200,text="Reload Time: " + str(reloads[ship]),font = "fixedsys 22",fill="white")
-        j = screen.create_text((width/2)+225,200,text="Rotation Speed: " + str(rotations[ship]),font = "fixedsys 22",fill="white")
-        k = screen.create_text((width/2)-225,300,text="Bullet Speed: " + str(bulletSpeeds[ship]),font = "fixedsys 22",fill="white")
-        l = screen.create_text((width/2)+225,300,text="Movement Speed: " + str(speeds[ship]),font = "fixedsys 22",fill="white")
+
+        img1 = screen.create_image(width-75,(height/2),image=arrowR)
+        img2 = screen.create_image(75,height/2,image=arrowL)
+
+        startTxt1 = screen.create_text((width/2)+3, height-153, text="START GAME",font="fixedsys 45",fill="green2")
+        startTxt2 = screen.create_text(width/2, height-155, text="START GAME",font="fixedsys 45",fill="white",activefill="grey50")
+
+        startBtn1 = screen.create_rectangle((width/2)-222,height-222,(width/2)+228,height-82,outline="green2",width=3)
+        startBtn2 = screen.create_rectangle((width/2)-225,height-225,(width/2)+225,height-85,outline="white",width=3)
+
+        playerSelection = screen.create_polygon(width/2,400,(width/2)-100,700,(width/2)+100,700,fill=color)  
+
+        title = screen.create_text(width/2,75,text="S E L E C T  S H I P",font="fixedsys 75 bold",fill="white")
+
+        stat1 = screen.create_text((width/2)-225,200,text="Reload Time: " + str(reloads[ship]),font = "fixedsys 22",fill="white")
+        stat2 = screen.create_text((width/2)+225,200,text="Rotation Speed: " + str(rotations[ship]),font = "fixedsys 22",fill="white")
+        stat3 = screen.create_text((width/2)-225,300,text="Bullet Speed: " + str(bulletSpeeds[ship]),font = "fixedsys 22",fill="white")
+        stat4 = screen.create_text((width/2)+225,300,text="Movement Speed: " + str(speeds[ship]),font = "fixedsys 22",fill="white")
+
 
         screen.update()
         sleep(0.01)
         clean()
-        screen.delete(a,b,c,d,e,f,g,h,i,j,k,l)
+        screen.delete(L,R,img1,img2,startTxt1,startTxt2,startBtn1,startBtn2,playerSelection,title,stat1,stat2,stat3,stat4)
 
-
+#MOUSE MOTION TRACKER
 def motion(event):
     global x,y,loop,ship
     x, y = event.x, event.y
 
+#CHECK IF CLICKED INSIDE BUTTON AND IS IN THE MENU
 def click(event):
     global ship
     if (x in range(round((width/2)-225),round((width/2)+225))) and y in range(height-225,height-85) and gameStarted == False:
@@ -190,7 +216,7 @@ def click(event):
             if ship == 0: ship = 3
             else: ship -= 1
 
-
+#SET INITIAL VALUES
 def setInitialValues(*args):
 
     global radius, asteroid, radius, speed, minRadius, maxRadius
@@ -275,6 +301,7 @@ def setInitialValues(*args):
         boostSpeed = maxPlayerSpeed + 4
         maxSpeed = 10
 
+#DRAW INITIAL OBJECTS
 def drawObjects():
 
     global player, playerCircle, score, playerAngle, timer
@@ -285,16 +312,18 @@ def drawObjects():
     score = screen.create_text(50,60, fill="white",font=("fixedsys", 20))
     timer = screen.create_text(250,60, fill="white",font=("fixedsys", 20))
 
+#UPDATE SCORE EVERY FRAME
 def updateScore(scoreText):
     screen.itemconfig(score, text=str(scoreText))
 
+#UPDATE TIME EVERY FRAMA
 def updateTime():
     global currentTime
     currentTime = time() - startTime
     screen.itemconfig(timer, text=str(round(currentTime,1)))
 
 
-
+#ROTATE SHIP WHEN L/R ARROW KEYS PRESSED
 def keyPress(event):
     global pos1, pos2, pos3, maxPlayerSpeed,rotation
 
@@ -332,15 +361,13 @@ def keyPress(event):
     elif event.keysym == "q":
         menu()
 
+#STOP BOOST WHEN UP KEY IS RELEASED
 def keyUp(event):
     global maxPlayerSpeed
     if event.keysym in ["w", "Up"]:
         maxPlayerSpeed = maxPlayerSpeed1
 
-
-
-    
-
+#SPAWN ASTEROIDS FROM L AND R EDGES OF SCREEN
 def drawasteroidR():
     x = 0 - 100
     y = randint(0, height)
@@ -359,19 +386,23 @@ def drawasteroidL():
     radius.append(r)
     speed.append(randint(1,maxSpeed))
 
-
+#MOVE ASTEROIDS EACH FRAME
 def moveasteroids():
     for i in range(len(asteroid)):
         screen.move(asteroid[i], -speed[i], 0)
 
+#MOVE PLAYER EACH FRAME
 def movePlayer():
     global coords1, coords2, coords3, player, playerspeedY, playerSpeedX, arrayX
     global arrayY, maxPlayerSpeed
     coords1 = (arrayX[pos1], arrayY[pos1])
     coords2 = (arrayX[pos2], arrayY[pos2])
     coords3 = (arrayX[pos3], arrayY[pos3])
+
+    #EXCEPTION FOR FIRST FRAME OF THE GAME
     try: screen.delete(player)
     except: pass
+
     player = screen.create_polygon(coords1,coords2,coords3,fill=color)
     playerSpeedX = -(maxPlayerSpeed * cos(radians(pos1)))
     playerspeedY = -(maxPlayerSpeed * sin(radians(pos1)))
@@ -379,6 +410,7 @@ def movePlayer():
         arrayX[i] += playerSpeedX
         arrayY[i] += playerspeedY
 
+#SPAWN NEW BULLET AFTER SPECIFIED COOLDOWN
 def spawnBullet():
     global b, bulletAngle, pos1, bulletSpeeds, bulletSpeedsX, bulletSpeedsY, lastBullet
 
@@ -393,12 +425,13 @@ def spawnBullet():
         bulletSpeedsY.append (-(maxBulletSpeed * sin(radians(pos1))))
         lastBullet = time()
 
+#MOVE BULLET EACH FRAME
 def moveBullets():
     for i in range(len(bullets)):
         screen.move(bullets[i], bulletSpeedsX[i], bulletSpeedsY[i])
 
 
-
+#CHECK IF PLAYER HAS HIT AN EDGE
 def checkEdges():
     if (screen.coords(player))[1] <= 0:
         endGame()
@@ -411,13 +444,14 @@ def checkEdges():
 
 
 
-
+#GET COORDINATES OF ASTEROID
 def getCoords(asteroid):
     xy = screen.coords(asteroid)
     x = (xy[0] + xy[2])/2
     y = (xy[1] + xy[3])/2
     return(x,y)
 
+#DELETE ALL REFRENCES OF AN ASTEROID
 def deleteAsteroid(i):
     global radius,colours,speed,asteroid
     del radius[i]
@@ -425,6 +459,7 @@ def deleteAsteroid(i):
     screen.delete(asteroid[i])
     del asteroid[i]
 
+#DELETE ALL REFRENCES OF A BULLET
 def deleteBullet(i):
     global bullets, bulletAngle, bulletSpeedsX, bulletSpeedsY
     del bulletAngle[i]
@@ -433,6 +468,7 @@ def deleteBullet(i):
     screen.delete(bullets[i])
     del bullets[i]
 
+#CLEAN ASTEROIDS AND BULLETS THAT HAVE GONE OFF SCREEN TO REDUCE LAG
 def clean():
     for i in range(len(asteroid)-1, -1, -1):
         x = getCoords(asteroid[i])
@@ -445,7 +481,7 @@ def clean():
         if ((x[0] < -20 or x[0] > width + 20) or (x[1] < -20 or x[1] > height + 20)):
             deleteBullet(i)
 
-
+#DISTANCE CALCULATOR TO CHECK COLLISIONS
 def getDistance(a,b):
     x1 = getCoords(a)
     x1 = x1[0]
@@ -457,6 +493,7 @@ def getDistance(a,b):
     y2 = y2[1]
     return(sqrt((x2-x1)**2 + (y2-y1)**2))
 
+#COLLISION HANDLER
 def collision():
     points = 0
     for i in range(len(asteroid)-1, -1, -1):
@@ -472,15 +509,19 @@ def collision():
         pass
     return(points)
 
-
+#STOP GAME IF PLAYER COLLIDED
 def endGame():
     global bullets, gameRunning
+    PlaySound(None, SND_PURGE)
+    PlaySound(Death.mp3, SND_ASYNC)
     gameRunning = False
 
     for i in range(len(bullets)-1,-1,-1):
         screen.delete(bullets[i])
 
+    #I HAVE NO IDEA WHY THIS LINE IS NEEDED BUT THE GAME WILL CRASH WITHOUT IT SO DO NOT DELETE IT (IT JUST DRAWS THE PLAYER AGAIN)
     screen.create_polygon(coords1,coords2,coords3,fill=color)
+
 
     screen.create_text(width/2, (height/2) - 50, text="GAME OVER", fill="white", font=("fixedsys", 45))
 
@@ -490,6 +531,7 @@ def endGame():
 
     screen.create_text(width/2, (height/2)+150, text="PRESS \"Q\" TO PLAY AGAIN OR \"ESC\" TO QUIT", fill="white",font="fixedsys 22")
 
+    #WRITE HIGHSCORE IF IT IS GRATER THAN WHAT IS ALREADY IN THE JSON FILE
     with open("Highscores.json","r") as data:
         obj = load(data)
         hs = (obj["highScore"])
@@ -504,7 +546,7 @@ def endGame():
 
 
 
-
+#MAIN GAME LOOP
 def runGame():
     
     global end, points,spawnChance,gameRunning, player, pos1,loop
@@ -543,6 +585,7 @@ def runGame():
         screen.delete(player)
     endGame()
 
+#KEYBINDINGS
 tk.after(0,menu)
 screen.bind("<Key>", keyPress)
 screen.bind("<KeyRelease>", keyUp)
