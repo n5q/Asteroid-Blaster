@@ -513,7 +513,7 @@ def collision():
 def endGame():
     global bullets, gameRunning
     PlaySound(None, SND_PURGE)
-    PlaySound(Death.mp3, SND_ASYNC)
+    PlaySound("Death.mp3", SND_ASYNC)
     gameRunning = False
 
     for i in range(len(bullets)-1,-1,-1):
