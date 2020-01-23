@@ -497,7 +497,7 @@ def endGame():
     if points > hs:
 
         with open("Highscores.json","w") as data:
-            #data.write("{\n\"highScore\" : " + str(points) +"\n}")
+
             obj["highScore"] = points
             dump(obj, data)
 
