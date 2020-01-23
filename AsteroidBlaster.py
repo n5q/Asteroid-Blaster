@@ -6,7 +6,11 @@
 ###  https://github.com/NasifQadri/Asteroid-Blaster                           ###                                
 ###  LAST MODIFIED:   THU JAN 23 02:36:42 2020 UTC                            ###                                
 #################################################################################
-###  NOTE:                                                                    ###   
+###                                                                           ###     
+###  NOTE:                                                                    ### 
+###                                                                           ###      
+###  MAKE SURE THAT THE GAME HAS WRITE PERMISSIONS TO THE DIRECTORY IS IS IN  ###
+###  OR ELSE THE HIGHSCORE FUNCTIONALITY WILL BREAK                           ###      
 ###                                                                           ###       
 ###  THE UI AND FONTS WILL BE BROKEN ON SCREENS WITH RESOLUTIONS LOWER THAN   ###
 ###  1280x1024 OR SMALL SCREENS SUCH AS LAPTOPS BECAUSE I HAVE NOT TESTED     ###
@@ -22,6 +26,7 @@
 ###  comment, news reporting, teaching, scholarship, education and research.  ###
 ###  Fair use is a use permitted by copyright statute that might otherwise    ###
 ###  be infringing.                                                           ###
+###                                                                           ###     
 #################################################################################
 
 
