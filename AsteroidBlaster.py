@@ -38,6 +38,7 @@ from json import load, dump, loads
 
 # WINSOUND IS NOT AVALIABLE ON MACOS/LINUX SO IF YOU ARE PLAYING ON EITHER OF THOSE PLATFORMS
 # YOU WILL JUST HAVE TO PLAY WITHOUT SOUND :/
+# (PLEASE DON'T RUN THIS UNDER WINE, IT WILL BREAK MORE THINGS THAN IT WILL FIX)
 
 from os import name
 if name == "nt": Windows = True
@@ -70,10 +71,10 @@ def menu():
     #ONLY STARTS THE LOOP THE FIRST TIME THE MENU APPEARS
     if firstRun == True:
         if Windows:
-            PlaySound('Loop.mp3', SND_LOOP + SND_ASYNC)
+            PlaySound('Resources/Loop.mp3', SND_LOOP + SND_ASYNC)
 
     #READ HIGHSCORE FROM JSON
-    with open("Highscores.json","r") as data:
+    with open("Resources/Highscores.json","r") as data:
         obj = loads(data.read())
         highscore = str(obj["highScore"])
 
@@ -195,8 +196,8 @@ def shipSelector():
         # THE POSITION OF THE X AND Y VALUES WILL VARY DEPENDING ON THE RESOLUTION OFTHE MONITOR 
         # BEING USED MAKING THE UI INCONSISTENT AND BROKEN
 
-        arrowR = PhotoImage(file="arrowR.gif")
-        arrowL = PhotoImage(file="arrowL.gif")
+        arrowR = PhotoImage(file="Resources/arrowR.gif")
+        arrowL = PhotoImage(file="Resources/arrowL.gif")
 
         img1 = screen.create_image(width-75,(height/2),image=arrowR)
         img2 = screen.create_image(75,height/2,image=arrowL)
@@ -416,7 +417,7 @@ def keyPress(event):
 
     elif event.keysym == "q":
         PlaySound(None, SND_PURGE)
-        PlaySound("Loop.mp3", SND_ASYNC + SND_LOOP)
+        PlaySound("Resources/Loop.mp3", SND_ASYNC + SND_LOOP)
         menu()
 
 #STOP BOOST WHEN UP KEY IS RELEASED
@@ -587,7 +588,7 @@ def endGame():
     global bullets, gameRunning
     if Windows:
         PlaySound(None, SND_PURGE)
-        PlaySound("Death.mp3", SND_ASYNC)
+        PlaySound("Resources/Death.mp3", SND_ASYNC)
     gameRunning = False
 
     for i in range(len(bullets)-1,-1,-1):
@@ -605,13 +606,13 @@ def endGame():
     screen.create_text(width/2, (height/2)+150, text="PRESS \"Q\" TO PLAY AGAIN OR \"ESC\" TO QUIT", fill="white",font="fixedsys 22")
 
     #WRITE HIGHSCORE IF IT IS GRATER THAN WHAT IS ALREADY IN THE JSON FILE
-    with open("Highscores.json","r") as data:
+    with open("Resources/Highscores.json","r") as data:
         obj = load(data)
         hs = (obj["highScore"])
 
     if points > hs:
 
-        with open("Highscores.json","w") as data:
+        with open("Resources/Highscores.json","w") as data:
 
             obj["highScore"] = points
             dump(obj, data)
@@ -625,7 +626,7 @@ def runGame():
     global end, points,spawnChance,gameRunning, player, pos1,loop
     if Windows:
         PlaySound(None, SND_PURGE)
-        PlaySound("Splash.mp3", SND_ASYNC + SND_LOOP)
+        PlaySound("Resources/Splash.mp3", SND_ASYNC + SND_LOOP)
 
     loop = False
     screen.delete("all")
