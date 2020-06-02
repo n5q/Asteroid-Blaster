@@ -1,8 +1,7 @@
 
 #################################################################################
 ###  ASTEROID BLASTER                                                         ###
-###  GRADE 11 CS SUMMATIVE                                                    ###        
-###  NASIF QADRI                                                              ###
+###  GRADE 11 CS SUMMATIVE                                                    ###      
 ###  https://github.com/NasifQadri/Asteroid-Blaster                           ###                                
 ###  LAST MODIFIED:   THU JAN 23 02:36:42 2020 UTC                            ###                                
 #################################################################################
