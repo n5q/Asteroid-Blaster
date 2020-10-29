@@ -416,8 +416,8 @@ def keyPress(event):
         tk.destroy()
 
     elif event.keysym == "q":
-        PlaySound(None, SND_PURGE)
-        PlaySound("Resources/Loop.mp3", SND_ASYNC + SND_LOOP)
+        If Windows: PlaySound(None, SND_PURGE)
+        If Windows: PlaySound("Resources/Loop.mp3", SND_ASYNC + SND_LOOP)
         menu()
 
 #STOP BOOST WHEN UP KEY IS RELEASED
