@@ -41,7 +41,7 @@ from json import load, dump, loads
 
 from os import name
 if name == "nt": Windows = True
-    else: Windows = False
+else: Windows = False
 if Windows:
     from winsound import PlaySound, SND_LOOP, SND_ASYNC, SND_PURGE
 
