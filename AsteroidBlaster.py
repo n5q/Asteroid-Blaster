@@ -1,43 +1,10 @@
 
-#################################################################################
-###  ASTEROID BLASTER                                                         ###
-###  GRADE 11 CS SUMMATIVE                                                    ###      
-###  https://github.com/n5q/Asteroid-Blaster                           ###                                
-###  LAST MODIFIED:   THU JAN 23 02:36:42 2020 UTC                            ###                                
-#################################################################################
-###                                                                           ###     
-###  NOTE:                                                                    ### 
-###                                                                           ###      
-###  MAKE SURE THAT THE GAME HAS WRITE PERMISSIONS TO THE DIRECTORY IS IS IN  ###
-###  OR ELSE THE HIGHSCORE FUNCTIONALITY WILL BREAK                           ###      
-###                                                                           ###       
-###  THE UI AND FONTS WILL BE BROKEN ON SCREENS WITH RESOLUTIONS LOWER THAN   ###
-###  1280x1024 OR SMALL SCREENS SUCH AS LAPTOPS BECAUSE I HAVE NOT TESTED     ###
-###  ON ANYTHING SMALLER. MOST FONTS ARE BROKEN ON MAC/LINUX BECAUSE FIXEDSYS ###
-###  IS A WINDOWS FONT                                                        ###
-###                                                                           ###      
-###  The music used in ths game is provided by SpiffTune                      ###
-###  (https://soundcloud.com/spifftune) and the death effect is provided by   ###
-###  Toby Fox (https://tobyfox.bandcamp.com/)                                 ###
-###                                                                           ###
-###  Copyright Disclaimer under section 107 of the Copyright Act of 1976,     ###
-###  allowance is made for “fair use” for purposes such as criticism,         ###
-###  comment, news reporting, teaching, scholarship, education and research.  ###
-###  Fair use is a use permitted by copyright statute that might otherwise    ###
-###  be infringing.                                                           ###
-###                                                                           ###     
-#################################################################################
-
 
 from tkinter import Tk, Canvas, PhotoImage
 from random import randint
 from math import cos, sin, atan2, sqrt, pi, radians, degrees
 from time import time, sleep
 from json import load, dump, loads
-
-# WINSOUND IS NOT AVALIABLE ON MACOS/LINUX SO IF YOU ARE PLAYING ON EITHER OF THOSE PLATFORMS
-# YOU WILL JUST HAVE TO PLAY WITHOUT SOUND :/
-# (PLEASE DON'T RUN THIS UNDER WINE, IT WILL BREAK MORE THINGS THAN IT WILL FIX)
 
 from os import name
 if name == "nt": Windows = True
